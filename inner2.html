@@ -28,36 +28,30 @@
   style="width: 100vw; height: 100vh; border: none; display: block;"
   allowfullscreen
 ></iframe>
+  <script type="module" src="./firebase.js"></script>
+  
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
-    import { getRemoteConfig, fetchAndActivate, getValue } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-remote-config.js";
-  
-    const firebaseConfig = {
-      apiKey: "YOUR_API_KEY",
-      authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-      projectId: "YOUR_PROJECT_ID",
-      appId: "YOUR_APP_ID"
-    };
-  
-    const app = initializeApp(firebaseConfig);
-    const remoteConfig = getRemoteConfig(app);
-    remoteConfig.settings = {
-      minimumFetchIntervalMillis: 60000 // every 60s
-    };
-    remoteConfig.defaultConfig = {
-      force_refresh: "false"
-    };
-  
-    const checkForRefresh = () => {
-      fetchAndActivate(remoteConfig).then(() => {
-        const shouldRefresh = getValue(remoteConfig, "force_refresh").asBoolean();
-        if (shouldRefresh) location.reload();
-      }).catch((err) => {
-        console.error("Remote Config error:", err);
-      });
-    };
-  
-    setInterval(checkForRefresh, 60000); // run every minute
+    import { remoteConfig, fetchAndActivate, getValue } from './firebase.js';
+
+    // track the last‐seen version
+    let lastVersion = remoteConfig.defaultConfig.refresh_version;
+
+    async function checkForUpdate() {
+      try {
+        await fetchAndActivate(remoteConfig);
+        const current = getValue(remoteConfig, 'refresh_version').asString();
+        if (current !== lastVersion) {
+          lastVersion = current;
+          location.reload();
+        }
+      } catch (e) {
+        console.error('Remote Config error:', e);
+      }
+    }
+
+    // run once immediately, then every 60s
+    checkForUpdate();
+    setInterval(checkForUpdate, 60_000);
   </script>
 </body>
 </html>
