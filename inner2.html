@@ -20,6 +20,22 @@
       height: 100vh;
       display: block;
     }
+    #debugMenu {
+      display: none;
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      padding: 10px;
+      background: #111;
+      color: #0f0;
+      border: 1px solid #0f0;
+      font-family: monospace;
+      z-index: 10000;
+    }
+    
+    .debug-visible #debugMenu {
+      display: block;
+    }
   </style>
 </head>
 <body>
@@ -52,9 +68,37 @@
       }
     }
 
-
-    checkForUpdate();
-    setInterval(checkForUpdate, 60_000);
+    let interval = 60_000; // 60 seconds
+    let nextUpdateTime = Date.now() + interval;
+    
+    function updateCountdown() {
+      const now = Date.now();
+      const msRemaining = nextUpdateTime - now;
+      const secondsRemaining = Math.max(0, Math.floor(msRemaining / 1000));
+      document.getElementById("timeUntilNext").textContent = secondsRemaining + "s";
+    }
+    
+    setInterval(() => {
+      checkForUpdate();            // Your function
+      nextUpdateTime = Date.now() + interval;
+    }, interval);
+    
+    setInterval(updateCountdown, 1000); // Update debug menu countdown every second
   </script>
+  <div id="debugMenu">
+  <p>Next update in: <span id="timeUntilNext">60s</span></p>
+  </div>
+<script>
+  function toggleDebugMenu() {
+    document.body.classList.toggle("debug-visible");
+  }
+  
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "F3") {
+      e.preventDefault(); // optional
+      toggleDebugMenu();
+    }
+  });
+</script>
 </body>
 </html>
