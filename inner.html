@@ -19,6 +19,20 @@
       left: 0;
       z-index: 9999;
     }
+    .iframe-wrapper {
+      position: relative;
+      width: 100%;
+      height: 500px; /* Adjust to fit visible part */
+      overflow: hidden;
+    }
+    
+    .iframe-wrapper iframe {
+      position: absolute;
+      top: -40px;        /* Push content up to hide bottom bar */
+      width: 101%;
+      height: 560px;     /* Taller than wrapper so content remains visible */
+      left: 0;
+    }
   </style>
 </head>
 <body>
