@@ -3,14 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Your Presentation</title>
+  <link rel="icon" type="image/x-icon" href="/favicon.png">
+  <title>Inner2.html</title>
   <style>
     html, body {
       margin: 0;
       padding: 0;
       height: 100%;
       overflow: hidden;
-      background-color: #000; /* You can change this to any color */
+      background-color: #000; 
     }
 
     iframe {
@@ -23,9 +24,37 @@
 </head>
 <body>
   <iframe
+  id="slideshowFrame"
   src="https://docs.google.com/presentation/d/e/2PACX-1vQwfM3Ns0fWrfCjer7gYcTTJ_d96j7WlZ0RPTY_t9I_mtR1E-05P3PVy9wnYkuPmPmXWdYOjl8LGlAC/embed?start=true&loop=true&delayms=5000&rm=minimal"
   style="width: 100vw; height: 100vh; border: none; display: block;"
   allowfullscreen
 ></iframe>
+  <script type="module" src="./firebase.js"></script>
+  
+  <script type="module">
+    import { remoteConfig, fetchAndActivate, getValue } from './firebase.js';
+
+    
+    let lastVersion = remoteConfig.defaultConfig.refresh_version;
+
+    async function checkForUpdate() {
+      try {
+        await fetchAndActivate(remoteConfig);
+        const current = getValue(remoteConfig, 'refresh_version').asString();
+        if (current !== lastVersion) {
+          lastVersion = current;
+          location.reload();
+        }
+        console.log("Current version:", current);
+        console.log("Last version:", lastVersion);
+      } catch (e) {
+        console.error('Remote Config error:', e);
+      }
+    }
+
+
+    checkForUpdate();
+    setInterval(checkForUpdate, 60_000);
+  </script>
 </body>
 </html>
