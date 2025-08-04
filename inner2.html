@@ -93,16 +93,51 @@
     }, interval);
     
     setInterval(updateCountdown, 1000); // Update debug menu countdown every second
+
+    function scheduleMidnightReload() {
+      const now = new Date();
+      const midnight = new Date();
+    
+      midnight.setHours(24, 0, 0, 0); // Set to next 0:00
+    
+      const timeUntilMidnight = midnight.getTime() - now.getTime();
+    
+      setTimeout(() => {
+        location.reload();
+      }, timeUntilMidnight);
+    }
+    
+    scheduleMidnightReload();
+
+    function displayTimeUntilMidnight() {
+      const now = new Date();
+      const midnight = new Date();
+    
+      midnight.setHours(24, 0, 0, 0); // Set to next 0:00
+    
+      const msLeft = midnight.getTime() - now.getTime();
+    
+      const hours = Math.floor(msLeft / 1000 / 60 / 60);
+      const minutes = Math.floor((msLeft / 1000 / 60) % 60);
+      const seconds = Math.floor((msLeft / 1000) % 60);
+    
+      const formatted = `${hours}h ${minutes}m ${seconds}s until midnight`;
+      document.getElementById("midnightTime").textContent = formatted;
+    }
+
+// Call it once on load
+    displayTimeUntilMidnight();
   </script>
   <div id="debugMenu">
   <p>Next update in: <span id="timeUntilNext">60s</span></p>
   <p>Fetch source: <span id="fetchSource">—</span></p>
+  <p id="midnightTime"></p>
   </div>
 <script>
   function toggleDebugMenu() {
     document.body.classList.toggle("debug-visible");
   }
-  
+
   document.addEventListener("keydown", (e) => {
     if (e.key === "F3") {
       e.preventDefault(); // optional
