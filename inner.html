@@ -2,64 +2,47 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>My Slideshow</title>
+  <title>Slideshow Viewer</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    body {
+    html, body {
       margin: 0;
-      background: #111;
-      font-family: 'Segoe UI', sans-serif;
-      color: white;
+      padding: 0;
+      background: #000;
       display: flex;
-      flex-direction: column;
-      align-items: center;
       justify-content: center;
-      min-height: 100vh;
-    }
-
-    .slide-container {
-      position: relative;
-      width: 100%;
-      max-width: 1080px;
-      height: 600px;
+      align-items: center;
+      height: 100vh;
       overflow: hidden;
-      box-shadow: 0 0 20px rgba(255,255,255,0.1);
-      border-radius: 10px;
     }
 
-    .slide-container iframe {
+    .slide-wrapper {
+      position: relative;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      box-shadow: 0 0 20px rgba(255,255,255,0.2);
+    }
+
+    .slide-wrapper iframe {
       position: absolute;
-      top: -45px; /* Adjust to crop bottom bar */
+      top: -50px; /* Adjust to crop bottom bar */
       left: 0;
-      width: 100%;
-      height: 680px;
+      width: 1920px;
+      height: 1180px; /* Taller than wrapper to allow upward shift */
       border: none;
-    }
-
-    .fallback-link {
-      margin-top: 20px;
-      font-size: 1rem;
-    }
-
-    .fallback-link a {
-      color: #00afff;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    .fallback-link a:hover {
-      text-decoration: underline;
     }
   </style>
 </head>
 <body>
-
-  <div class="slide-container">
-    <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vQwfM3Ns0fWrfCjer7gYcTTJ_d96j7WlZ0RPTY_t9I_mtR1E-05P3PVy9wnYkuPmPmXWdYOjl8LGlAC/pubembed?start=true&loop=true&delayms=5000" frameborder="0" width="1440" height="839" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
-  </div>
-
-  <div class="fallback-link">
-   
+  <div class="slide-wrapper">
+    <iframe
+      src="https://docs.google.com/presentation/d/e/SLIDE-ID/embed?start=true&loop=true&delayms=5000"
+      allow="fullscreen"
+      allowfullscreen
+      webkitallowfullscreen
+      mozallowfullscreen
+    ></iframe>
   </div>
 </body>
 </html>
