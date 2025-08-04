@@ -55,19 +55,28 @@
 
     async function checkForUpdate() {
       try {
-        await fetchAndActivate(remoteConfig);
+        const fetchedRemotely = await fetchAndActivate(remoteConfig);
         const current = getValue(remoteConfig, 'refresh_version').asString();
+    
+        // Show fetch source
+        const fetchEl = document.getElementById("fetchSource");
+        const sourceText = fetchedRemotely ? "Fresh from server" : "Served from cache";
+        fetchEl.textContent = sourceText;
+        fetchEl.style.color = fetchedRemotely ? "#0f0" : "#888";
+    
         if (current !== lastVersion) {
           lastVersion = current;
           location.reload();
         }
+    
         console.log("Current version:", current);
         console.log("Last version:", lastVersion);
+        console.log("Fetched from:", sourceText);
       } catch (e) {
         console.error('Remote Config error:', e);
       }
     }
-
+    
     let interval = 60_000; // 60 seconds
     let nextUpdateTime = Date.now() + interval;
     
@@ -87,6 +96,7 @@
   </script>
   <div id="debugMenu">
   <p>Next update in: <span id="timeUntilNext">60s</span></p>
+  <p>Fetch source: <span id="fetchSource">—</span></p>
   </div>
 <script>
   function toggleDebugMenu() {
