@@ -29,23 +29,35 @@
   allowfullscreen
 ></iframe>
   <script type="module">
-    import { db } from './firebase.js';
-    import { ref, onValue, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
+    import { getRemoteConfig, fetchAndActivate, getValue } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-remote-config.js";
   
-    // Trigger the refresh
-    function triggerRefresh() {
-      set(ref(db, "refreshTrigger"), Date.now());
-    }
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+      projectId: "YOUR_PROJECT_ID",
+      appId: "YOUR_APP_ID"
+    };
   
-    // Listen for refresh signal
-    onValue(ref(db, "refreshTrigger"), (snapshot) => {
-      const ts = snapshot.val();
-      if (ts) {
-        // Example: reload an iframe instead of the full page
-        const frame = document.getElementById("slideshowFrame");
-        if (frame) frame.src = frame.src.split('?')[0] + '?ts=' + ts;
-      }
-    });
+    const app = initializeApp(firebaseConfig);
+    const remoteConfig = getRemoteConfig(app);
+    remoteConfig.settings = {
+      minimumFetchIntervalMillis: 60000 // every 60s
+    };
+    remoteConfig.defaultConfig = {
+      force_refresh: "false"
+    };
+  
+    const checkForRefresh = () => {
+      fetchAndActivate(remoteConfig).then(() => {
+        const shouldRefresh = getValue(remoteConfig, "force_refresh").asBoolean();
+        if (shouldRefresh) location.reload();
+      }).catch((err) => {
+        console.error("Remote Config error:", err);
+      });
+    };
+  
+    setInterval(checkForRefresh, 60000); // run every minute
   </script>
 </body>
 </html>
