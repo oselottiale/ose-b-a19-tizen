@@ -138,6 +138,12 @@
     document.body.classList.toggle("debug-visible");
   }
 
+  window.addEventListener("message", (event) => {
+    if (event.data.action === "toggleDebug") {
+      toggleDebugMenu(); // Your existing function
+    }
+  });
+  
   document.addEventListener("keydown", (e) => {
     if (e.key === "F3") {
       e.preventDefault(); // optional
