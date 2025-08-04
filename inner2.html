@@ -10,7 +10,7 @@
       padding: 0;
       height: 100%;
       overflow: hidden;
-      background-color: #000; /* You can change this to any color */
+      background-color: #000; 
     }
 
     iframe {
@@ -33,7 +33,7 @@
   <script type="module">
     import { remoteConfig, fetchAndActivate, getValue } from './firebase.js';
 
-    // track the last‐seen version
+    
     let lastVersion = remoteConfig.defaultConfig.refresh_version;
 
     async function checkForUpdate() {
@@ -51,7 +51,7 @@
       }
     }
 
-    // run once immediately, then every 60s
+
     checkForUpdate();
     setInterval(checkForUpdate, 60_000);
   </script>
