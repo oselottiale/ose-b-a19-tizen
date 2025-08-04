@@ -36,13 +36,14 @@
   </style>
 </head>
 <body>
-  <iframe id="myIframe" src="https://t4.oseale.com/inner.html" allowfullscreen></iframe>
+  <iframe id="lowerIframe" id="myIframe" src="https://t4.oseale.com/inner.html" allowfullscreen></iframe>
   
 
   
 </body>
 <footer>
   <button id="fullscreenBtn" onclick="goFullscreen()">⛶</button>
+  <button id="debugToggleBtn">🔧</button>
   <script>
   function goFullscreen() {
     const iframe = document.getElementById("myIframe");
@@ -54,6 +55,11 @@
       iframe.msRequestFullscreen(); // IE11
     }
   }
+
+  document.getElementById("debugToggleBtn").addEventListener("click", () => {
+    const lowerFrame = document.getElementById("lowerIframe");
+    lowerFrame.contentWindow.postMessage({ action: "toggleDebug" }, "*");
+  });
   </script>
 </footer>
 </html>
