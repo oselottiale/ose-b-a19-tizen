@@ -1,48 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Slideshow Viewer</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Presentation</title>
   <style>
     html, body {
       margin: 0;
       padding: 0;
-      background: #000;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
+      height: 100%;
       overflow: hidden;
+      background-color: #000; /* You can change this to any color */
     }
 
-    .slide-wrapper {
-      position: relative;
-      width: 100vw;
-      height: 100vh;
-      overflow: hidden;
-      box-shadow: 0 0 20px rgba(255,255,255,0.2);
-    }
-
-    .slide-wrapper iframe {
-      position: absolute;
-      top: -50px; /* Adjust to crop bottom bar */
-      left: 0;
-      width: 100vw;
-      height: 100vh; /* Taller than wrapper to allow upward shift */
+    iframe {
       border: none;
+      width: 100vw;
+      height: 100vh;
+      display: block;
     }
   </style>
 </head>
 <body>
-  <div class="slide-wrapper">
-    <iframe
-      src="https://docs.google.com/presentation/d/e/2PACX-1vQwfM3Ns0fWrfCjer7gYcTTJ_d96j7WlZ0RPTY_t9I_mtR1E-05P3PVy9wnYkuPmPmXWdYOjl8LGlAC/embed?start=true&loop=true&delayms=5000&rm=minimal"
-      allow="fullscreen"
-      allowfullscreen
-      webkitallowfullscreen
-      mozallowfullscreen
-    ></iframe>
-  </div>
+  <iframe src="https://docs.google.com/presentation/d/e/2PACX-.../pubembed?start=true&loop=true&delayms=5000&rm=minimal" allowfullscreen></iframe>
 </body>
 </html>
