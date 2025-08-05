@@ -49,7 +49,7 @@
   </style>
 </head>
 <body>
-  <iframe id="lowerIframe" id="myIframe" src="https://t4.oseale.com/inner.html" allowfullscreen></iframe>
+  <iframe id="lowerIframe" src="https://t4.oseale.com/inner.html" allowfullscreen></iframe>
   
 
   
@@ -59,7 +59,7 @@
   <button id="debugToggleBtn">🔧</button>
   <script>
   function goFullscreen() {
-    const iframe = document.getElementById("myIframe");
+    const iframe = document.getElementById("lowerIframe");
     if (iframe.requestFullscreen) {
       iframe.requestFullscreen();
     } else if (iframe.webkitRequestFullscreen) {
