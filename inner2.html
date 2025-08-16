@@ -45,96 +45,88 @@
   style="width: 100vw; height: 100vh; border: none; display: block;"
   allowfullscreen
 ></iframe>
-
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-remote-config.js"></script>
+  <script type="module" src="./firebase.js"></script>
   
-  <script>
-var firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    projectId: "YOUR_PROJECT_ID",
-    appId: "YOUR_APP_ID"
-  };
+  <script type="module">
+    import { remoteConfig, fetchAndActivate, getValue } from './firebase.js';
 
-  firebase.initializeApp(firebaseConfig);
+    
+    let lastVersion = remoteConfig.defaultConfig.refresh_version;
 
-  var remoteConfig = firebase.remoteConfig();
-  remoteConfig.settings = {
-    minimumFetchIntervalMillis: 60000
-  };
-  remoteConfig.defaultConfig = {
-    refresh_version: "1"
-  };
-
-  var lastVersion = remoteConfig.defaultConfig.refresh_version;
-  var interval = 60000;
-  var nextUpdateTime = Date.now() + interval;
-
-  function checkForUpdate() {
-    remoteConfig.fetchAndActivate()
-      .then(function (fetchedRemotely) {
-        var current = remoteConfig.getValue("refresh_version").asString();
-        var fetchEl = document.getElementById("fetchSource");
-        var sourceText = fetchedRemotely ? "Fresh from server" : "Served from cache";
+    async function checkForUpdate() {
+      try {
+        const fetchedRemotely = await fetchAndActivate(remoteConfig);
+        const current = getValue(remoteConfig, 'refresh_version').asString();
+    
+        // Show fetch source
+        const fetchEl = document.getElementById("fetchSource");
+        const sourceText = fetchedRemotely ? "Fresh from server" : "Served from cache";
         fetchEl.textContent = sourceText;
         fetchEl.style.color = fetchedRemotely ? "#0f0" : "#888";
-
+    
         if (current !== lastVersion) {
           lastVersion = current;
           location.reload();
         }
-
+    
         console.log("Current version:", current);
         console.log("Last version:", lastVersion);
         console.log("Fetched from:", sourceText);
-      })
-      .catch(function (e) {
-        console.error("Remote Config error:", e);
-      });
-  }
+      } catch (e) {
+        console.error('Remote Config error:', e);
+      }
+    }
+    
+    let interval = 60_000; // 60 seconds
+    let nextUpdateTime = Date.now() + interval;
+    
+    function updateCountdown() {
+      const now = Date.now();
+      const msRemaining = nextUpdateTime - now;
+      const secondsRemaining = Math.max(0, Math.floor(msRemaining / 1000));
+      document.getElementById("timeUntilNext").textContent = secondsRemaining + "s";
+    }
+    
+    setInterval(() => {
+      checkForUpdate();            // Your function
+      nextUpdateTime = Date.now() + interval;
+    }, interval);
+    
+    setInterval(updateCountdown, 1000); // Update debug menu countdown every second
 
-  function updateCountdown() {
-    var now = Date.now();
-    var msRemaining = nextUpdateTime - now;
-    var secondsRemaining = Math.max(0, Math.floor(msRemaining / 1000));
-    document.getElementById("timeUntilNext").textContent = secondsRemaining + "s";
-  }
+    function scheduleMidnightReload() {
+      const now = new Date();
+      const midnight = new Date();
+    
+      midnight.setHours(24, 0, 0, 0); // Set to next 0:00
+    
+      const timeUntilMidnight = midnight.getTime() - now.getTime();
+    
+      setTimeout(() => {
+        location.reload();
+      }, timeUntilMidnight);
+    }
+    
+    scheduleMidnightReload();
 
-  setInterval(function () {
-    checkForUpdate();
-    nextUpdateTime = Date.now() + interval;
-  }, interval);
+    function displayTimeUntilMidnight() {
+      const now = new Date();
+      const midnight = new Date();
+    
+      midnight.setHours(24, 0, 0, 0); // Set to next 0:00
+    
+      const msLeft = midnight.getTime() - now.getTime();
+    
+      const hours = Math.floor(msLeft / 1000 / 60 / 60);
+      const minutes = Math.floor((msLeft / 1000 / 60) % 60);
+      const seconds = Math.floor((msLeft / 1000) % 60);
+    
+      const formatted = `${hours}h ${minutes}m ${seconds}s until midnight`;
+      document.getElementById("midnightTime").textContent = formatted;
+    }
 
-  setInterval(updateCountdown, 1000);
-
-  function scheduleMidnightReload() {
-    var now = new Date();
-    var midnight = new Date();
-    midnight.setHours(24, 0, 0, 0);
-    var timeUntilMidnight = midnight.getTime() - now.getTime();
-
-    setTimeout(function () {
-      location.reload();
-    }, timeUntilMidnight);
-  }
-
-  scheduleMidnightReload();
-
-  function displayTimeUntilMidnight() {
-    var now = new Date();
-    var midnight = new Date();
-    midnight.setHours(24, 0, 0, 0);
-    var msLeft = midnight.getTime() - now.getTime();
-
-    var hours = Math.floor(msLeft / 1000 / 60 / 60);
-    var minutes = Math.floor((msLeft / 1000 / 60) % 60);
-    var seconds = Math.floor((msLeft / 1000) % 60);
-
-    var formatted = hours + "h " + minutes + "m " + seconds + "s until midnight";
-    document.getElementById("midnightTime").textContent = formatted;
-  }
-
-  displayTimeUntilMidnight();
+// Call it once on load
+    displayTimeUntilMidnight();
   </script>
   <div id="debugMenu">
   <p>Next update in: <span id="timeUntilNext">60s</span></p>
