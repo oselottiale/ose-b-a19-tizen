@@ -87,7 +87,7 @@
       document.getElementById("timeUntilNext").textContent = secondsRemaining + "s";
     }
     
-    setInterval(() => {
+    setTimeout(() => {
       checkForUpdate();            // Your function
       nextUpdateTime = Date.now() + interval;
     }, interval);
