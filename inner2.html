@@ -46,6 +46,32 @@
   allowfullscreen
 ></iframe>
   <script type="module" src="./firebase.js"></script>
+
+  <script>
+    function fetchStatus() {
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", "https://script.google.com/macros/s/your-script-id/exec", true);
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+          var status = JSON.parse(xhr.responseText);
+          document.getElementById("statusDisplay").textContent = "Status: " + status;
+
+          if (status === true || status === "true") {
+            location.reload(); // Refresh the page if status is true
+          }
+        }
+      };
+      xhr.send();
+    }
+
+    window.onload = function () {
+      // Check status every 5 seconds
+      setInterval(fetchStatus, 5000);
+    };
+  </script>
+
+
+
   
   <script type="module">
     import { remoteConfig, fetchAndActivate, getValue } from './firebase.js';
