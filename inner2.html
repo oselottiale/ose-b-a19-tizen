@@ -56,8 +56,8 @@
           var status = JSON.parse(xhr.responseText);
           document.getElementById("statusDisplay").textContent = "Status: " + status;
 
-          if (status === true || status === "true") {
-            location.reload(); // Refresh the page if status is true
+          if (status === 1) {
+            location.reload(); // Refresh the page if status is 1
           }
         }
       };
@@ -65,8 +65,7 @@
     }
 
     window.onload = function () {
-      // Check status every 5 seconds
-      setInterval(fetchStatus, 5000);
+      setInterval(fetchStatus, 5000); // Check every 5 seconds
     };
   </script>
 
