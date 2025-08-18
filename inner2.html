@@ -49,25 +49,30 @@
 
   <script>
     function fetchStatus() {
-      var xhr = new XMLHttpRequest();
-      xhr.open("GET", "https://script.google.com/macros/s/AKfycby8X53IgB9gmaBjnt2wbxtlNiHucPs_ZjOK3LJvrbocxAM4qdRM6dup0JCxP2fmmGgF/exec", true);
-      xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-          console.log("Raw response:", xhr.responseText); // Debug line
-          var status = JSON.parse(xhr.responseText);
-          document.getElementById("statusDisplay").textContent = "Status: " + status;
+    fetch("https://script.google.com/macros/s/AKfycby8X53IgB9gmaBjnt2wbxtlNiHucPs_ZjOK3LJvrbocxAM4qdRM6dup0JCxP2fmmGgF/exec")
+      .then(response => response.text()) // Use .text() to see raw output
+      .then(data => {
+        console.log("Raw response:", data); // Debugging output
 
-          if (status === 1) {
-            location.reload(); // Refresh the page
-          }
+        // Convert to number safely
+        const status = Number(data.trim());
+
+        console.log("Parsed status:", status); // Should log 1
+
+        if (status === 1) {
+          console.log("Refreshing page...");
+          location.reload();
         }
-      };
-      xhr.send();
-    }
+      })
+      .catch(error => {
+        console.error("Error fetching status:", error);
+      });
+  }
 
-    window.onload = function () {
-      setInterval(fetchStatus, 5000); // Check every 5 seconds
-    };
+  window.onload = function () {
+    setInterval(fetchStatus, 5000); // Check every 5 seconds
+  };
+
 
   </script>
 
