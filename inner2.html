@@ -45,7 +45,7 @@
   style="width: 100vw; height: 100vh; border: none; display: block;"
   allowfullscreen
 ></iframe>
-  <script type="module" src="./firebase.js"></script>
+  
 
   <script>
   // Set the interval time in milliseconds (e.g., 5000ms = 5 seconds)
@@ -80,38 +80,6 @@
 
   
   <script type="module">
-    import { remoteConfig, fetchAndActivate, getValue } from './firebase.js';
-
-    
-    let lastVersion = remoteConfig.defaultConfig.refresh_version;
-
-    async function checkForUpdate() {
-      try {
-        const fetchedRemotely = await fetchAndActivate(remoteConfig);
-        const current = getValue(remoteConfig, 'refresh_version').asString();
-    
-        // Show fetch source
-        const fetchEl = document.getElementById("fetchSource");
-        const sourceText = fetchedRemotely ? "Fresh from server" : "Served from cache";
-        fetchEl.textContent = sourceText;
-        fetchEl.style.color = fetchedRemotely ? "#0f0" : "#888";
-    
-        if (current !== lastVersion) {
-          lastVersion = current;
-          location.reload();
-        }
-    
-        console.log("Current version:", current);
-        console.log("Last version:", lastVersion);
-        console.log("Fetched from:", sourceText);
-      } catch (e) {
-        console.error('Remote Config error:', e);
-      }
-    }
-    
-    let interval = 60_000; // 60 seconds
-    let nextUpdateTime = Date.now() + interval;
-    
     function updateCountdown() {
       const now = Date.now();
       const msRemaining = nextUpdateTime - now;
@@ -120,7 +88,6 @@
     }
     
     setInterval(() => {
-      checkForUpdate();            // Your function
       nextUpdateTime = Date.now() + interval;
     }, interval);
     
