@@ -48,53 +48,51 @@
   
 
   <script>
-  // Set the interval time in milliseconds (e.g., 5000ms = 5 seconds)
   const CHECK_INTERVAL = 60000;
-  
+
   // Your Apps Script endpoint
   const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby8X53IgB9gmaBjnt2wbxtlNiHucPs_ZjOK3LJvrbocxAM4qdRM6dup0JCxP2fmmGgF/exec";
-
+  
   let countdown = CHECK_INTERVAL / 1000;
   const countdownDisplay = document.getElementById("timeUntilNext");
-
-    // Countdown updater
+  
+  // Countdown updater
   setInterval(() => {
-      countdown = CHECK_INTERVAL / 1000;
-      countdownDisplay.textContent = countdown;
-
-    
+    countdown = CHECK_INTERVAL / 1000;
+    countdownDisplay.textContent = countdown;
+  }, 1000); // Update every second
+  
   // Function to check status and refresh if needed
-  // Function to check status and refresh if needed (compatible with older Tizen)
-function checkStatusAndRefresh() {
-  var xhr = new XMLHttpRequest();
-  xhr.open("GET", SCRIPT_URL, true);
-
-  xhr.onreadystatechange = function () {
-    if (xhr.readyState === 4) { // DONE
-      if (xhr.status === 200) {
-        var status = Number(xhr.responseText.trim());
-        console.log("Status received:", status);
-
-        if (status === 1) {
-          console.log("Status is 1 — refreshing page.");
-          location.reload();
+  function checkStatusAndRefresh() {
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", SCRIPT_URL, true);
+  
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === 4) { // DONE
+        if (xhr.status === 200) {
+          var status = Number(xhr.responseText.trim());
+          console.log("Status received:", status);
+  
+          if (status === 1) {
+            console.log("Status is 1 — refreshing page.");
+            location.reload();
+          }
+        } else {
+          console.error("Error fetching status:", xhr.status);
         }
-      } else {
-        console.error("Error fetching status:", xhr.status);
       }
-    }
-  };
-
-  xhr.onerror = function () {
-    console.error("Network error occurred.");
-  };
-
-  xhr.send();
-}
-
+    };
+  
+    xhr.onerror = function () {
+      console.error("Network error occurred.");
+    };
+  
+    xhr.send();
+  }
   
   // Start the timed execution
   setInterval(checkStatusAndRefresh, CHECK_INTERVAL);
+
   </script>
 
   <div id="debugMenu">
