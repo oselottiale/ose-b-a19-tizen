@@ -48,26 +48,32 @@
   <script type="module" src="./firebase.js"></script>
 
   <script>
-    fetch("https://script.google.com/macros/s/AKfycby8X53IgB9gmaBjnt2wbxtlNiHucPs_ZjOK3LJvrbocxAM4qdRM6dup0JCxP2fmmGgF/exec")
+  // Set the interval time in milliseconds (e.g., 5000ms = 5 seconds)
+  const CHECK_INTERVAL = 5000;
+  
+  // Your Apps Script endpoint
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby8X53IgB9gmaBjnt2wbxtlNiHucPs_ZjOK3LJvrbocxAM4qdRM6dup0JCxP2fmmGgF/exec";
+  
+  // Function to check status and refresh if needed
+  function checkStatusAndRefresh() {
+    fetch(SCRIPT_URL)
       .then(response => response.text())
       .then(data => {
-        const status = Number(data.trim()); // Converts "1" to 1
+        const status = Number(data.trim()); // Convert "1" to 1
+        console.log("Status received:", status);
+  
         if (status === 1) {
+          console.log("Status is 1 — refreshing page.");
           location.reload();
         }
-      });
-    
-
+      })
       .catch(error => {
         console.error("Error fetching status:", error);
       });
   }
-
-  window.onload = function () {
-    setInterval(fetchStatus, 5000); // Check every 5 seconds
-  };
-
-
+  
+  // Start the timed execution
+  setInterval(checkStatusAndRefresh, CHECK_INTERVAL);
   </script>
 
 
