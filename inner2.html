@@ -59,11 +59,9 @@
 
     // Countdown updater
   setInterval(() => {
-    if (countdown > 0) {
-      countdown--;
+      countdown = CHECK_INTERVAL / 1000;
       countdownDisplay.textContent = countdown;
-    }
-  }, 1000);
+
     
   // Function to check status and refresh if needed
   function checkStatusAndRefresh() {
