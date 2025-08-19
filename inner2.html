@@ -48,22 +48,16 @@
   <script type="module" src="./firebase.js"></script>
 
   <script>
-    function fetchStatus() {
-    fetch("https://script.google.com/macros/s/AKfycby8X53IgB9gmaBjnt2wbxtlNiHucPs_ZjOK3LJvrbocxAM4qdRM6dup0JCxP2fmmGgF/exec")
-      .then(response => response.text()) // Use .text() to see raw output
+    fetch("https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec")
+      .then(response => response.text())
       .then(data => {
-        console.log("Raw response:", data); // Debugging output
-
-        // Convert to number safely
-        const status = Number(data.trim());
-
-        console.log("Parsed status:", status); // Should log 1
-
+        const status = Number(data.trim()); // Converts "1" to 1
         if (status === 1) {
-          console.log("Refreshing page...");
           location.reload();
         }
-      })
+      });
+    
+
       .catch(error => {
         console.error("Error fetching status:", error);
       });
