@@ -89,12 +89,6 @@
 
   
   <script type="module">
-    function updateCountdown() {
-      const now = Date.now();
-      const msRemaining = nextUpdateTime - now;
-      const secondsRemaining = Math.max(0, Math.floor(msRemaining / 1000));
-      document.getElementById("timeUntilNext").textContent = secondsRemaining + "s";
-    }
     
     setInterval(() => {
       nextUpdateTime = Date.now() + interval;
