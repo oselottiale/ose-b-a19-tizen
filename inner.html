@@ -65,20 +65,24 @@
   // Function to check status and refresh if needed
   function checkStatusAndRefresh() {
     var xhr = new XMLHttpRequest();
-    xhr.open("GET", SCRIPT_URL, true);
+    xhr.open("GET", SCRIPT_URL, true); // Replace SCRIPT_URL with your actual URL
   
     xhr.onreadystatechange = function () {
-      if (xhr.readyState === 4) { // DONE
+      if (xhr.readyState === 4) {
         if (xhr.status === 200) {
-          var status = Number(xhr.responseText.trim());
-          console.log("Status received:", status);
+          var responseText = xhr.responseText.trim();
+          var status = Number(responseText);
+  
+          console.log("Received status:", status);
   
           if (status === 1) {
             console.log("Status is 1 — refreshing page.");
             location.reload();
+          } else {
+            console.log("Status is not 1 — no action taken.");
           }
         } else {
-          console.error("Error fetching status:", xhr.status);
+          console.error("Request failed with status:", xhr.status);
         }
       }
     };
@@ -89,6 +93,9 @@
   
     xhr.send();
   }
+
+
+    };
   
   // Start the timed execution
   setInterval(checkStatusAndRefresh, CHECK_INTERVAL);
