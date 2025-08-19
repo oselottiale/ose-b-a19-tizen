@@ -53,6 +53,16 @@
   
   // Your Apps Script endpoint
   const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby8X53IgB9gmaBjnt2wbxtlNiHucPs_ZjOK3LJvrbocxAM4qdRM6dup0JCxP2fmmGgF/exec";
+
+    let countdown = CHECK_INTERVAL / 1000;
+    const countdownDisplay = document.getElementById("timeUntilNext");
+
+    function updateCountdown() {
+      countdownDisplay.textContent = countdown;
+      countdown--;
+      if (countdown < 0) countdown = CHECK_INTERVAL / 1000;
+    }
+
   
   // Function to check status and refresh if needed
   function checkStatusAndRefresh() {
@@ -129,8 +139,6 @@
   </script>
   <div id="debugMenu">
   <p>Next update in: <span id="timeUntilNext">60s</span></p>
-  <p>Fetch source: <span id="fetchSource">—</span></p>
-  <p id="midnightTime"></p>
   </div>
 <script>
   function toggleDebugMenu() {
