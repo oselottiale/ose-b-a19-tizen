@@ -64,22 +64,34 @@
 
     
   // Function to check status and refresh if needed
-  function checkStatusAndRefresh() {
-    fetch(SCRIPT_URL)
-      .then(response => response.text())
-      .then(data => {
-        const status = Number(data.trim()); // Convert "1" to 1
+  // Function to check status and refresh if needed (compatible with older Tizen)
+function checkStatusAndRefresh() {
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", SCRIPT_URL, true);
+
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4) { // DONE
+      if (xhr.status === 200) {
+        var status = Number(xhr.responseText.trim());
         console.log("Status received:", status);
-  
+
         if (status === 1) {
           console.log("Status is 1 — refreshing page.");
           location.reload();
         }
-      })
-      .catch(error => {
-        console.error("Error fetching status:", error);
-      });
-  }
+      } else {
+        console.error("Error fetching status:", xhr.status);
+      }
+    }
+  };
+
+  xhr.onerror = function () {
+    console.error("Network error occurred.");
+  };
+
+  xhr.send();
+}
+
   
   // Start the timed execution
   setInterval(checkStatusAndRefresh, CHECK_INTERVAL);
