@@ -45,93 +45,48 @@
   style="width: 100vw; height: 100vh; border: none; display: block;"
   allowfullscreen
 ></iframe>
-  <script type="module" src="./firebase.js"></script>
   
-  <script type="module">
-    import { remoteConfig, fetchAndActivate, getValue } from './firebase.js';
+
+  <script>
+  // Set the interval time in milliseconds (e.g., 5000ms = 5 seconds)
+  const CHECK_INTERVAL = 60000;
+  
+  // Your Apps Script endpoint
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby8X53IgB9gmaBjnt2wbxtlNiHucPs_ZjOK3LJvrbocxAM4qdRM6dup0JCxP2fmmGgF/exec";
+
+  let countdown = CHECK_INTERVAL / 1000;
+  const countdownDisplay = document.getElementById("timeUntilNext");
+
+    // Countdown updater
+  setInterval(() => {
+      countdown = CHECK_INTERVAL / 1000;
+      countdownDisplay.textContent = countdown;
 
     
-    let lastVersion = remoteConfig.defaultConfig.refresh_version;
-
-    async function checkForUpdate() {
-      try {
-        const fetchedRemotely = await fetchAndActivate(remoteConfig);
-        const current = getValue(remoteConfig, 'refresh_version').asString();
-    
-        // Show fetch source
-        const fetchEl = document.getElementById("fetchSource");
-        const sourceText = fetchedRemotely ? "Fresh from server" : "Served from cache";
-        fetchEl.textContent = sourceText;
-        fetchEl.style.color = fetchedRemotely ? "#0f0" : "#888";
-    
-        if (current !== lastVersion) {
-          lastVersion = current;
+  // Function to check status and refresh if needed
+  function checkStatusAndRefresh() {
+    fetch(SCRIPT_URL)
+      .then(response => response.text())
+      .then(data => {
+        const status = Number(data.trim()); // Convert "1" to 1
+        console.log("Status received:", status);
+  
+        if (status === 1) {
+          console.log("Status is 1 — refreshing page.");
           location.reload();
         }
-    
-        console.log("Current version:", current);
-        console.log("Last version:", lastVersion);
-        console.log("Fetched from:", sourceText);
-      } catch (e) {
-        console.error('Remote Config error:', e);
-      }
-    }
-    
-    let interval = 60_000; // 60 seconds
-    let nextUpdateTime = Date.now() + interval;
-    
-    function updateCountdown() {
-      const now = Date.now();
-      const msRemaining = nextUpdateTime - now;
-      const secondsRemaining = Math.max(0, Math.floor(msRemaining / 1000));
-      document.getElementById("timeUntilNext").textContent = secondsRemaining + "s";
-    }
-    
-    setInterval(() => {
-      checkForUpdate();            // Your function
-      nextUpdateTime = Date.now() + interval;
-    }, interval);
-    
-    setInterval(updateCountdown, 1000); // Update debug menu countdown every second
-
-    function scheduleMidnightReload() {
-      const now = new Date();
-      const midnight = new Date();
-    
-      midnight.setHours(24, 0, 0, 0); // Set to next 0:00
-    
-      const timeUntilMidnight = midnight.getTime() - now.getTime();
-    
-      setTimeout(() => {
-        location.reload();
-      }, timeUntilMidnight);
-    }
-    
-    scheduleMidnightReload();
-
-    function displayTimeUntilMidnight() {
-      const now = new Date();
-      const midnight = new Date();
-    
-      midnight.setHours(24, 0, 0, 0); // Set to next 0:00
-    
-      const msLeft = midnight.getTime() - now.getTime();
-    
-      const hours = Math.floor(msLeft / 1000 / 60 / 60);
-      const minutes = Math.floor((msLeft / 1000 / 60) % 60);
-      const seconds = Math.floor((msLeft / 1000) % 60);
-    
-      const formatted = `${hours}h ${minutes}m ${seconds}s until midnight`;
-      document.getElementById("midnightTime").textContent = formatted;
-    }
-
-// Call it once on load
-    displayTimeUntilMidnight();
+      })
+      .catch(error => {
+        console.error("Error fetching status:", error);
+      });
+  }
+  
+  // Start the timed execution
+  setInterval(checkStatusAndRefresh, CHECK_INTERVAL);
   </script>
+
   <div id="debugMenu">
   <p>Next update in: <span id="timeUntilNext">60s</span></p>
-  <p>Fetch source: <span id="fetchSource">—</span></p>
-  <p id="midnightTime"></p>
   </div>
 <script>
   function toggleDebugMenu() {
