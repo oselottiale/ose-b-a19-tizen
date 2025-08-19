@@ -53,14 +53,6 @@
   // Your Apps Script endpoint
   const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby8X53IgB9gmaBjnt2wbxtlNiHucPs_ZjOK3LJvrbocxAM4qdRM6dup0JCxP2fmmGgF/exec";
   
-  let countdown = CHECK_INTERVAL / 1000;
-  const countdownDisplay = document.getElementById("timeUntilNext");
-  
-  // Countdown updater
-  setInterval(() => {
-    countdown = CHECK_INTERVAL / 1000;
-    countdownDisplay.textContent = countdown;
-  }, 1000); // Update every second
   
   // Function to check status and refresh if needed
   function checkStatusAndRefresh() {
