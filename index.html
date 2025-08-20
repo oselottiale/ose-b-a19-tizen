@@ -48,7 +48,7 @@
     }
     #linktreeBtn {
       position: fixed;
-      bottom: 60px;
+      bottom: 100px;
       right: 20px;
       padding: 10px 14px;
       font-size: 14px;
@@ -70,6 +70,7 @@
 <footer>
   <button id="fullscreenBtn" onclick="goFullscreen()">⛶</button>
   <button id="debugToggleBtn">🔧</button>
+  <button id="linkBtn"></button>
   <script>
   function goFullscreen() {
     const iframe = document.getElementById("lowerIframe");
@@ -86,6 +87,13 @@
     const lowerFrame = document.getElementById("lowerIframe");
     lowerFrame.contentWindow.postMessage({ action: "toggleDebug" }, "*");
   });
+
+  document.getElementById("debugToggleBtn").addEventListener("click", () => {
+    location.href = "https://t4.oseale.com/linktree.html";
+  });
+
+    
+
   </script>
 </footer>
 </html>
