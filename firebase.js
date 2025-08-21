@@ -38,5 +38,5 @@ remoteConfig.defaultConfig = {
 };
 
 // 5) Export only what the page needs
-export { remoteConfig, fetchAndActivate, getValue, auth, createUserWithEmailAndPassword, signInWithEmailAndPassword };
+export { remoteConfig, fetchAndActivate, getValue, auth, signInWithEmailAndPassword };
 
