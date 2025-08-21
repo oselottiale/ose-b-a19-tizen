@@ -25,7 +25,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const auth = getAuth(app);
-const provider = new GoogleAuthProvider();
 getAnalytics(app);
 
 // 4) Init Remote Config with defaults + settings
@@ -39,5 +38,5 @@ remoteConfig.defaultConfig = {
 };
 
 // 5) Export only what the page needs
-export { remoteConfig, fetchAndActivate, getValue };
+export { remoteConfig, fetchAndActivate, getValue, auth, createUserWithEmailAndPassword, signInWithEmailAndPassword };
 
