@@ -2,11 +2,13 @@
 // 1) Bring in the core SDKs + Remote Config
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-analytics.js";
+import { getAuth, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
 import {
   getRemoteConfig,
   fetchAndActivate,
   getValue
 } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-remote-config.js";
+
 
 // 2) Your Firebase config (copy/paste from console)
 const firebaseConfig = {
@@ -21,6 +23,9 @@ const firebaseConfig = {
 
 // 3) Init Firebase + Analytics
 const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
 getAnalytics(app);
 
 // 4) Init Remote Config with defaults + settings
