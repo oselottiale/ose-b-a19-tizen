@@ -1,1 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Peltsin infotaulu.</title>
+  <link rel="icon" type="image/png" href="oseale-logo.png" />
+  <style>
+    :root {
+      --primary: #f4c542;
+      --accent: #e2b032;
+      --bg-dark: #121212;
+      --bg-card: #1e1e1e;
+      --text-main: #f7f7f7;
+      --text-muted: #aaa;
+      --link-hover: #ffd95c;
+      --border: #2c2c2c;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+    }
+
+    header {
+      background-color: var(--bg-card);
+      padding: 2rem 1.5rem;
+      text-align: center;
+      border-bottom: 2px solid var(--accent);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    header img {
+      height: 60px;
+      max-width: 100%;
+      margin-bottom: 0.5rem;
+    }
+
+    header h1 {
+      font-size: 2.2rem;
+      margin: 0;
+      color: var(--primary);
+    }
+
+    header p {
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      margin-top: 0.5rem;
+    }
+
+    main {
+      max-width: 900px;
+      margin: auto;
+      padding: 2rem 1.5rem;
+    }
+
+    section {
+      margin-bottom: 2.5rem;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      color: var(--primary);
+      margin-bottom: 0.6rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.3rem;
+    }
+
+    ul {
+      list-style-type: disc;
+      padding-left: 1.5rem;
+    }
+
+    ul li {
+      margin-bottom: 0.5rem;
+    }
+
+    ul li::marker {
+      color: var(--accent);
+    }
+
+    a {
+      color: var(--primary);
+      text-decoration: none;
+      transition: color 0.2s ease-in-out;
+    }
+
+    a:hover {
+      color: var(--link-hover);
+      text-decoration: underline;
+    }
+
+    footer {
+      background-color: var(--bg-card);
+      padding: 1.5rem;
+      text-align: center;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border);
+    }
+
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 1.8rem;
+      }
+      header img {
+        height: 50px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <img src="oseale-logo.png" alt="Oseale Logo" />
+    <h1>Peltsin infotaulun ohjauspaneeli.</h1>
+    <p>Made by oseale in 2025</p>
+  </header>
+
+  <main>
+    <section>
+      <h2>Kirjoita salasana</h2>
+      <input type="password" id="password" placeholder="Salasana">
+      <button onclick="login()">Kirjaudu</button>
+    </section>
+
+    <section>
+      <h2>Unohditko salasanan?</h2>
+      
+      <p><a href="https://docs.google.com/spreadsheets/d/1zNr2Ng3vgtYa8vh-RagZwLrdGGIeIj0kzYfdOT_LaSU/edit?gid=0#gid=0">Sheets ohjauspaneeli</a></p>
+      <p><a href="inner.html">Uusin (v2) versio sisäinen</a></p>
+      <p><a href="inner2.html">Beta versio sisäinen</a></p>
+      <p><a href="inner3.html">Vanha (v1) versio sisäinen</a></p>
+      <p><a href="https://script.google.com/u/0/home/projects/1T1lyWuX-FrJ6XsdJxoLPW--NhUgqPmSWlBSs7n2FVVAyitfwjc3mUnyE/edit">Google apps script (yhdistää sheetshin ja slidesin)</a></p>
+      
+    </section>
+  </main>
+
+  <footer>
+    &copy; 2025 Oseale.
+  </footer>
+
+</body>
+</html>
 
