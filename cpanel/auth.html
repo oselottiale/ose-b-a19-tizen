@@ -122,6 +122,27 @@
   <script src="https://www.gstatic.com/firebasejs/9.6.4/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.4/firebase-auth.js"></script>
 
+  <script type="module">
+    import { auth, signInWithEmailAndPassword } from './firebase.js';
+    
+    const fixedEmail = "admin@example.com";
+    const passwordInput = document.getElementById('password');
+    
+    document.getElementById('authForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const password = passwordInput.value;
+    
+      signInWithEmailAndPassword(auth, fixedEmail, password)
+        .then((userCredential) => {
+          // ✅ Successful login
+          window.location.href = "https://t4.oseale.com/cpanel";
+        })
+        .catch((error) => {
+          alert("Login failed: " + error.message);
+        });
+    });
+  </script>
+
   <header>
     <img src="oseale-logo.png" alt="Oseale Logo" />
     <h1>Peltsin infotaulun ohjauspaneeli.</h1>
@@ -131,8 +152,10 @@
   <main>
     <section>
       <h2>Kirjoita salasana</h2>
-      <input type="password" id="password" placeholder="Salasana">
-      <button onclick="login()">Kirjaudu</button>
+      <form id="authForm">
+        <input type="password" id="password" placeholder="Salasana" required>
+        <button type="submit">Kirjaudu</button>
+      </form>
     </section>
 
     <section>
