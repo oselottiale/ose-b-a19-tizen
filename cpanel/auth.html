@@ -9,7 +9,7 @@
     body {
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      background: linear-gradient(135deg, #f4c542, #f0b71a);
       display: flex;
       justify-content: center;
       align-items: center;
@@ -78,7 +78,7 @@
     <h2>Enter Secret Code</h2>
     <input type="password" id="code" placeholder="Secret Code" />
     <button id="unlockBtn">Unlock</button>
-    <div class="footer">© 2025 Aleksi Inc.</div>
+    <div class="footer">© 2025 Oseale.</div>
   </div>
 
   <script type="module">
@@ -94,7 +94,6 @@
         await fetchAndActivate(remoteConfig);
         const secretCode = getValue(remoteConfig, "secret_code").asString().trim();
 
-        console.log("Fetched secret_code:", secretCode);
         console.log("User entered:", userCode);
 
         if (userCode === secretCode) {
