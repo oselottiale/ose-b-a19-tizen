@@ -118,49 +118,6 @@
 </head>
 <body>
 
-  <script type="module">
-    import {
-      remoteConfig,
-      fetchAndActivate,
-      getValue
-    } from 'https://t4.oseale.com/firebase.js';
-  
-    const checkBtn = document.getElementById("checkBtn");
-    const userInput = document.getElementById("userInput");
-    const resultDisplay = document.getElementById("result");
-  
-    checkBtn.addEventListener("click", async () => {
-      resultDisplay.textContent = ""; // Clear previous result
-  
-      try {
-        const activated = await fetchAndActivate(remoteConfig);
-        if (!activated) {
-          throw new Error("Remote Config not activated");
-        }
-  
-        const remoteCode = getValue(remoteConfig, "secret_code").asString().trim();
-        const userCode = userInput.value.trim();
-  
-        console.log("Remote code:", remoteCode);
-        console.log("User entered:", userCode);
-  
-        if (userCode === remoteCode) {
-          resultDisplay.textContent = "✅ Code accepted. Redirecting...";
-          setTimeout(() => {
-            window.location.href = "success.html";
-          }, 1000); // Optional delay for UX
-        } else {
-          resultDisplay.textContent = "❌ Wrong code. Try again.";
-        }
-      } catch (error) {
-        console.error("Error during Remote Config fetch:", error);
-        resultDisplay.textContent = "⚠️ Could not fetch config. Try again later.";
-      }
-    });
-  </script>
-
-
-
   <header>
     <img src="https://t4.oseale.com/oseale-logo.png" alt="Oseale Logo" />
     <h1>Peltsin infotaulun ohjauspaneeli.</h1>
@@ -176,6 +133,47 @@
         <p id="result"></p>
       </form>
     </section>
+
+    <script type="module">
+      import {
+        remoteConfig,
+        fetchAndActivate,
+        getValue
+      } from 'https://t4.oseale.com/firebase.js';
+    
+      const checkBtn = document.getElementById("checkBtn");
+      const userInput = document.getElementById("userInput");
+      const resultDisplay = document.getElementById("result");
+    
+      checkBtn.addEventListener("click", async () => {
+        resultDisplay.textContent = ""; // Clear previous result
+    
+        try {
+          const activated = await fetchAndActivate(remoteConfig);
+          if (!activated) {
+            throw new Error("Remote Config not activated");
+          }
+    
+          const remoteCode = getValue(remoteConfig, "secret_code").asString().trim();
+          const userCode = userInput.value.trim();
+    
+          console.log("Remote code:", remoteCode);
+          console.log("User entered:", userCode);
+    
+          if (userCode === remoteCode) {
+            resultDisplay.textContent = "✅ Code accepted. Redirecting...";
+            setTimeout(() => {
+              window.location.href = "success.html";
+            }, 1000); // Optional delay for UX
+          } else {
+            resultDisplay.textContent = "❌ Wrong code. Try again.";
+          }
+        } catch (error) {
+          console.error("Error during Remote Config fetch:", error);
+          resultDisplay.textContent = "⚠️ Could not fetch config. Try again later.";
+        }
+      });
+    </script>
 
     <section>
       <h2>Unohditko salasanan?</h2>
