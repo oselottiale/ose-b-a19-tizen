@@ -118,30 +118,29 @@
 </head>
 <body>
 
-  
-  <script src="https://www.gstatic.com/firebasejs/9.6.4/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.4/firebase-auth.js"></script>
-
   <script type="module">
-    import { auth, signInWithEmailAndPassword } from 'https://t4.oseale.com/firebase.js';
-    
-    const fixedEmail = "admin@example.com";
-    const passwordInput = document.getElementById('password');
-    
-    document.getElementById('authForm').addEventListener('submit', (e) => {
-      e.preventDefault();
-      const password = passwordInput.value;
-    
-      signInWithEmailAndPassword(auth, fixedEmail, password)
-        .then((userCredential) => {
-          // ✅ Successful login
-          window.location.href = "https://t4.oseale.com/cpanel";
-        })
-        .catch((error) => {
-          alert("Login failed: " + error.message);
-        });
+    import { remoteConfig, fetchAndActivate, getValue } from './firebase.js';
+
+    document.getElementById("checkBtn").addEventListener("click", async () => {
+      try {
+        await fetchAndActivate(remoteConfig);
+        const remoteCode = getValue(remoteConfig, "secret_code").asString();
+        const userCode = document.getElementById("userInput").value;
+
+        if (userCode === remoteCode) {
+          // ✅ Redirect to success page
+          window.location.href = "success.html";
+        } else {
+          document.getElementById("result").textContent = "❌ Wrong code. Try again.";
+        }
+      } catch (error) {
+        console.error("Remote Config error:", error);
+        document.getElementById("result").textContent = "⚠️ Error fetching config.";
+      }
     });
   </script>
+
+
 
   <header>
     <img src="https://t4.oseale.com/oseale-logo.png" alt="Oseale Logo" />
@@ -153,8 +152,9 @@
     <section>
       <h2>Kirjoita salasana</h2>
       <form id="authForm">
-        <input type="password" id="password" placeholder="Salasana" required>
-        <button type="submit">Kirjaudu</button>
+        <input type="password" id="userInput" placeholder="Salasana" required>
+        <button id="checkBtn" type="submit">Kirjaudu</button>
+        <p id="result"></p>
       </form>
     </section>
 
