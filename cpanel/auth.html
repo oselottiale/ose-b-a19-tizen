@@ -135,11 +135,6 @@
     </section>
 
     <script type="module">
-      import {
-        remoteConfig,
-        fetchAndActivate,
-        getValue
-      } from 'https://t4.oseale.com/firebase.js';
 
       console.log("checkBtn:", checkBtn);
       console.log("userInput:", userInput);
@@ -148,6 +143,15 @@
       checkBtn.addEventListener("click", () => {
         console.log("Button clicked");
       });
+      
+      import {
+        remoteConfig,
+        fetchAndActivate,
+        getValue
+      } from 'https://t4.oseale.com/firebase.js';
+      console.log("Firebase module loaded");
+
+      
       
       const checkBtn = document.getElementById("checkBtn");
       const userInput = document.getElementById("userInput");
@@ -158,9 +162,10 @@
     
         try {
           const activated = await fetchAndActivate(remoteConfig);
-          if (!activated) {
-            throw new Error("Remote Config not activated");
-          }
+          console.log("Activated:", activated);
+        } catch (err) {
+          console.error("Fetch error:", err);
+        }
     
           const remoteCode = getValue(remoteConfig, "secret_code").asString().trim();
           const userCode = userInput.value.trim();
