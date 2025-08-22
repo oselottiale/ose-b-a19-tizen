@@ -125,6 +125,7 @@
       try {
         await fetchAndActivate(remoteConfig);
         const remoteCode = getValue(remoteConfig, "secret_code").asString();
+        console.log("Fetched secret_code:", remoteCode);
         const userCode = document.getElementById("userInput").value;
 
         if (userCode === remoteCode) {
