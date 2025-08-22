@@ -119,24 +119,42 @@
 <body>
 
   <script type="module">
-    import { remoteConfig, fetchAndActivate, getValue } from 'https://t4.oseale.com/firebase.js';
-
-    document.getElementById("checkBtn").addEventListener("click", async () => {
+    import {
+      remoteConfig,
+      fetchAndActivate,
+      getValue
+    } from 'https://t4.oseale.com/firebase.js';
+  
+    const checkBtn = document.getElementById("checkBtn");
+    const userInput = document.getElementById("userInput");
+    const resultDisplay = document.getElementById("result");
+  
+    checkBtn.addEventListener("click", async () => {
+      resultDisplay.textContent = ""; // Clear previous result
+  
       try {
-        await fetchAndActivate(remoteConfig);
-        const remoteCode = getValue(remoteConfig, "secret_code").asString();
-        console.log("Fetched secret_code:", remoteCode);
-        const userCode = document.getElementById("userInput").value;
-
+        const activated = await fetchAndActivate(remoteConfig);
+        if (!activated) {
+          throw new Error("Remote Config not activated");
+        }
+  
+        const remoteCode = getValue(remoteConfig, "secret_code").asString().trim();
+        const userCode = userInput.value.trim();
+  
+        console.log("Remote code:", remoteCode);
+        console.log("User entered:", userCode);
+  
         if (userCode === remoteCode) {
-          // ✅ Redirect to success page
-          window.location.href = "success.html";
+          resultDisplay.textContent = "✅ Code accepted. Redirecting...";
+          setTimeout(() => {
+            window.location.href = "success.html";
+          }, 1000); // Optional delay for UX
         } else {
-          document.getElementById("result").textContent = "❌ Wrong code. Try again.";
+          resultDisplay.textContent = "❌ Wrong code. Try again.";
         }
       } catch (error) {
-        console.error("Remote Config error:", error);
-        document.getElementById("result").textContent = "⚠️ Error fetching config.";
+        console.error("Error during Remote Config fetch:", error);
+        resultDisplay.textContent = "⚠️ Could not fetch config. Try again later.";
       }
     });
   </script>
