@@ -23,6 +23,9 @@
         overflow-x: hidden;
         }
 
+        .box {
+        width: calc(100vw - 40px); /* Adjust padding/margin as needed */
+        }
 
         .box {
         background: #fff;
@@ -32,6 +35,7 @@
         text-align: center;
         max-width: 500px;
         border: 4px solid #FFD700;
+        
         }
         h1 {
         text-align: center;
@@ -84,10 +88,10 @@
         .dropdown {
         position: relative;
         display: inline-block;
+        width: 100%;
         }
 
         .dropbtn {
-        width: 100%;
         height: 60px;
         padding: 12px;
         background-color: #1e3c72;
@@ -100,18 +104,42 @@
         transition: background 0.3s ease;
         margin-bottom: 8px;
         margin-top: 2px;
-        width: 500px;
+        width: 100%;
+        max-width: 500px;
         }
 
         .dropdown-content {
-        display: none;
+        will-change: max-height, opacity;
+        max-height: 0;
+        opacity: 0;
+        overflow: hidden;
+        transition: max-height 0.4s ease, opacity 0.4s ease;
         border: 4px solid #FFD700;
         background-color: #f9f9f9;
-        min-width: 160px;
+        width: 100%;
+        max-width: 500px;
         box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
         z-index: 1;
         border-radius: 6px;
-        overflow: hidden;
+        padding: 0;
+        }
+
+        .dropdown-content.show {
+        max-height: 500px;
+        opacity: 1;
+        padding: 12px 0;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .dropdown-content a {
+        opacity: 0;
+        transform: translateY(-10px);
+        transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .dropdown-content.show a {
+        opacity: 1;
+        transform: translateY(0);
         }
 
         .dropdown-content a {
@@ -131,7 +159,6 @@
         }
 
 
-
     </style>
 </head>
 <body>
@@ -141,26 +168,34 @@
         <h2>Made by oseale in 2025</h2>
         <a href="https://t4.oseale.com/cpanel/auth.html"><button class="margin_top">Pää ohjauspaneeli (tilapäisesti pois käytöstä)</button></a>
         <a href="https://t4.oseale.com/slides-edit-login/auth.html"><button>Muokkaa slides esitystä</button></a>
+        <a href="https://t4.oseale.com/slides-edit-login/menu-auth.html"><button>Muokkaa ruokalistan sisältöä</button></a>
         <div class="dropdown">
         <button class="dropbtn" id="dropdownToggle">Valikko ⌄</button>
         <div class="dropdown-content" id="dropdownMenu">
-            <a href="#">Etusivu</a>
-            <a href="#">Asetukset</a>
-            <a href="#">Tietoa</a>
+            <a href="https://t4.oseale.com/cpanel/sheets-auth.html">Sheets ohjauspaneeli</a>
+            <a href="https://script.google.com/home/projects/1T1lyWuX-FrJ6XsdJxoLPW--NhUgqPmSWlBSs7n2FVVAyitfwjc3mUnyE/edit">Google apps script (Etä päivitys)</a>
+            <a href="https://script.google.com/home/projects/13eG0tXEP2T4Rybifdsgmkcx0NIAkgijqTRLrchRNvqvqV4aacuoy6umH/edit">Google apps script (Ruokalista päivitys)</a>
+            <a href="https://t4.oseale.com/inner.html">Uusin (v2) versio sisäinen</a>
+            <a href="https://t4.oseale.com/inner3.html">Vanha (v1) versio sisäinen</a>
+            <a href="https://t4.oseale.com/inner2.html">Beta versio sisäinen</a>
         </div>
         </div>
         <script>
-        document.getElementById("dropdownToggle").addEventListener("click", function () {
-        document.getElementById("dropdownMenu").classList.toggle("show");
-        });
+        const toggleBtn = document.getElementById("dropdownToggle");
+        const dropdown = document.getElementById("dropdownMenu");
 
-        // Optional: Close dropdown if clicked outside
-        window.addEventListener("click", function (event) {
-        if (!event.target.matches("#dropdownToggle")) {
-            const dropdown = document.getElementById("dropdownMenu");
-            if (dropdown.classList.contains("show")) {
+        toggleBtn.addEventListener("click", () => {
+        if (dropdown.classList.contains("show")) {
+            // Collapse
+            dropdown.style.maxHeight = dropdown.scrollHeight + "px"; // Set current height
+            requestAnimationFrame(() => {
+            dropdown.style.maxHeight = "0";
             dropdown.classList.remove("show");
-            }
+            });
+        } else {
+            // Expand
+            dropdown.classList.add("show");
+            dropdown.style.maxHeight = dropdown.scrollHeight + "px";
         }
         });
         </script>
