@@ -249,15 +249,18 @@
             }
         }
 
-        function handleStatusReset(data) {
+        function handleStatusSet(data) {
             if (data.success) {
-                statusBox.textContent = "Status reset to 0. You may now close the tab.";
+                startCountdown();
             } else {
-                statusBox.textContent = "Error resetting status. Please try again.";
+                statusBox.style.display = "block";
+                statusBox.textContent = "Error setting status. Please try again.";
+                button.disabled = false;
+                timerDisplay.style.display = "none";
             }
-            button.disabled = false;
-            timerDisplay.style.display = "none";
         }
+        
+
 
         function startCountdown() {
             let secondsLeft = 70;
