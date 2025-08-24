@@ -193,8 +193,7 @@
         <a href="https://t4.oseale.com/linktree.html"><button>🡨 Takaisin</button></a>
         <a href="https://t4.oseale.com/slides-edit-login/menu-auth.html" style="display: none;"><button>Muokkaa ruokalistan sisältöä</button></a>
         <div id="statusBox">test</div>
-        <div id="message"></div>
-        <div id="js"></div>
+        <div id="timer" style="display: none; font-size: 18px; color: white; margin-top: 20px;"></div>
         <div class="dropdown">
         <button class="dropbtn" id="dropdownToggle" style="display: none;">Valikko ⌄</button>
         <div class="dropdown-content" id="dropdownMenu">
@@ -229,62 +228,71 @@
         <script>
         const button = document.getElementById("startButton");
         const statusBox = document.getElementById("statusBox");
+        const timerDisplay = document.getElementById("timer");
+
         const scriptURL = "https://script.google.com/macros/s/AKfycby5iKQ9voJr0sgYcPttNSAd5UHkdA_9kXvUnsQwz8ymVbrJ_XkQ3tYrT5keBXV4IPfI/exec";
 
-        function sendStatus(value, callbackName) {
-        const script = document.createElement("script");
-        script.src = `${scriptURL}?status=${value}&callback=${callbackName}`;
-        document.body.appendChild(script);
+        function sendStatus(value, callback) {
+            fetch(`${scriptURL}?status=${value}`)
+                .then(response => response.json())
+                .then(data => {
+                    callback(data);
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                    statusBox.style.display = "block";
+                    statusBox.textContent = "Network error. Please try again.";
+                    button.disabled = false;
+                    timerDisplay.style.display = "none";
+                });
         }
 
         function handleStatusSet(data) {
-        if (data.success) {
-            startCountdown();
-        } else {
-            statusBox.style.display = "block";
-            statusBox.textContent = "Error setting status. Please try again.";
-            button.disabled = false;
-        }
+            if (data.success) {
+                startCountdown();
+            } else {
+                statusBox.style.display = "block";
+                statusBox.textContent = "Error setting status. Please try again.";
+                button.disabled = false;
+                timerDisplay.style.display = "none";
+            }
         }
 
         function handleStatusReset(data) {
-        if (data.success) {
-            statusBox.textContent = "Status reset to 0. You may now close the tab.";
+            if (data.success) {
+                statusBox.textContent = "Status reset to 0. You may now close the tab.";
+            } else {
+                statusBox.textContent = "Error resetting status. Please try again.";
+            }
             button.disabled = false;
-        } else {
-            statusBox.textContent = "Error resetting status. Please try again.";
-            button.disabled = false;
-        }
+            timerDisplay.style.display = "none";
         }
 
         function startCountdown() {
-        let secondsLeft = 70;
-        statusBox.style.display = "block";
-        statusBox.textContent = `Status set to 1. You can close the tab in 1:10`;
+            let secondsLeft = 70;
+            statusBox.style.display = "block";
+            statusBox.textContent = "Status set to 1.";
+            timerDisplay.style.display = "block";
 
-        const timer = setInterval(() => {
-            secondsLeft--;
-            const min = Math.floor(secondsLeft / 60);
-            const sec = secondsLeft % 60;
-            statusBox.textContent = `Status is 1. You can close the tab in ${min}:${sec.toString().padStart(2, '0')}`;
+            const timer = setInterval(() => {
+                secondsLeft--;
+                const min = Math.floor(secondsLeft / 60);
+                const sec = secondsLeft % 60;
+                timerDisplay.textContent = `Time remaining: ${min}:${sec.toString().padStart(2, '0')}`;
 
-            if (secondsLeft <= 0) {
-            clearInterval(timer);
-            sendStatus("0", "handleStatusReset");
-            }
-        }, 1000);
+                if (secondsLeft <= 0) {
+                    clearInterval(timer);
+                    sendStatus("0", handleStatusReset);
+                }
+            }, 1000);
         }
 
         button.addEventListener("click", () => {
-        button.disabled = true;
-        sendStatus("1", "handleStatusSet");
+            button.disabled = true;
+            sendStatus("1", handleStatusSet);
         });
-
-
         </script>
         <div class="footer">&copy 2025 Oseale.</div>
     </div>
 </body>
-    
-
 </html>
