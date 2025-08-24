@@ -248,19 +248,16 @@
                 timerDisplay.style.display = "none";
             }
         }
-
-        function handleStatusSet(data) {
-            if (data.success) {
-                startCountdown();
-            } else {
-                statusBox.style.display = "block";
-                statusBox.textContent = "Error setting status. Please try again.";
-                button.disabled = false;
-                timerDisplay.style.display = "none";
-            }
-        }
         
-
+        function handleStatusReset(data) {
+            if (data.success) {
+                statusBox.textContent = "Status reset to 0. You may now close the tab.";
+            } else {
+                statusBox.textContent = "Error resetting status. Please try again.";
+            }
+            button.disabled = false;
+            timerDisplay.style.display = "none";
+        }
 
         function startCountdown() {
             let secondsLeft = 70;
@@ -276,14 +273,14 @@
 
                 if (secondsLeft <= 0) {
                     clearInterval(timer);
-                    sendStatus("0", handleStatusReset);
+                    sendStatus("0", "handleStatusReset");
                 }
             }, 1000);
         }
 
         button.addEventListener("click", () => {
             button.disabled = true;
-            sendStatus("1", handleStatusSet);
+            sendStatus("1", "handleStatusSet");
         });
         </script>
         <div class="footer">&copy 2025 Oseale.</div>
