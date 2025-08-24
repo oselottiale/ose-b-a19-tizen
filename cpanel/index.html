@@ -232,19 +232,10 @@
 
         const scriptURL = "https://script.google.com/macros/s/AKfycbwsTazufstfhe0mgcaN0kZZMFSM5qqQ3WEXQ1_iCPcSGO_STLJlSqCSmU3PEiZofciD/exec";
 
-        function sendStatus(value, callback) {
-            fetch(`${scriptURL}?status=${value}`)
-                .then(response => response.json())
-                .then(data => {
-                    callback(data);
-                })
-                .catch(error => {
-                    console.error("Error:", error);
-                    statusBox.style.display = "block";
-                    statusBox.textContent = "Network error. Please try again.";
-                    button.disabled = false;
-                    timerDisplay.style.display = "none";
-                });
+        function sendStatus(value, callbackName) {
+            const script = document.createElement("script");
+            script.src = `${scriptURL}?status=${value}&callback=${callbackName}`;
+            document.body.appendChild(script);
         }
 
         function handleStatusSet(data) {
