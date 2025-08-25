@@ -1,0 +1,10 @@
+User-agent: *
+Disallow: /inner.html
+Disallow: /inner2.html
+Disallow: /inner3.html
+Disallow: /cpanel/
+Disallow: /cpanel/auth.html
+Disallow: /slides-edit-login/
+Disallow: /cpanel/sheets-auth.html
+Disallow: /slides-edit-login/auth.html
+Disallow: /slides-edit-login/menu-auth.html
