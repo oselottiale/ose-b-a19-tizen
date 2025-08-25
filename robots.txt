@@ -8,3 +8,4 @@ Disallow: /slides-edit-login/
 Disallow: /cpanel/sheets-auth.html
 Disallow: /slides-edit-login/auth.html
 Disallow: /slides-edit-login/menu-auth.html
+Sitemap: https://t4.oseale.com/sitemap.xml
