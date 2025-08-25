@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="icon" href="https://t4.oseale.com/favicon.png?v=2" type="image/png">
-  <title>Inner2.html | t4.oseale.com</title>
+  <title>Inner3.html | t4.oseale.com</title>
   <style>
     html, body {
       margin: 0;
@@ -57,8 +57,7 @@
       try {
         const fetchedRemotely = await fetchAndActivate(remoteConfig);
         const current = getValue(remoteConfig, 'refresh_version').asString();
-    
-        // Show fetch source
+  
         const fetchEl = document.getElementById("fetchSource");
         const sourceText = fetchedRemotely ? "Fresh from server" : "Served from cache";
         fetchEl.textContent = sourceText;
@@ -77,7 +76,7 @@
       }
     }
     
-    let interval = 60_000; // 60 seconds
+    let interval = 60_000;
     let nextUpdateTime = Date.now() + interval;
     
     function updateCountdown() {
@@ -88,17 +87,17 @@
     }
     
     setInterval(() => {
-      checkForUpdate();            // Your function
+      checkForUpdate();            
       nextUpdateTime = Date.now() + interval;
     }, interval);
     
-    setInterval(updateCountdown, 1000); // Update debug menu countdown every second
+    setInterval(updateCountdown, 1000);
 
     function scheduleMidnightReload() {
       const now = new Date();
       const midnight = new Date();
     
-      midnight.setHours(24, 0, 0, 0); // Set to next 0:00
+      midnight.setHours(24, 0, 0, 0);
     
       const timeUntilMidnight = midnight.getTime() - now.getTime();
     
@@ -113,7 +112,7 @@
       const now = new Date();
       const midnight = new Date();
     
-      midnight.setHours(24, 0, 0, 0); // Set to next 0:00
+      midnight.setHours(24, 0, 0, 0);
     
       const msLeft = midnight.getTime() - now.getTime();
     
@@ -125,7 +124,6 @@
       document.getElementById("midnightTime").textContent = formatted;
     }
 
-// Call it once on load
     displayTimeUntilMidnight();
   </script>
   <div id="debugMenu">
