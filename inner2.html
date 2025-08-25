@@ -36,6 +36,16 @@
     .debug-visible #debugMenu {
       display: block;
     }
+    #virtualCursor {
+      position: fixed;
+      width: 20px;
+      height: 20px;
+      background: red;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+    }
+    
   </style>
 </head>
 <body>
@@ -45,6 +55,7 @@
   style="width: 100vw; height: 100vh; border: none; display: block;"
   allowfullscreen
 ></iframe>
+  <img src="https://t4.oseale.com/cursor.png">
   
 
   <script>
@@ -106,6 +117,14 @@
       toggleDebugMenu();
     }
   });
+</script>
+<script>
+  document.addEventListener("mousemove", (e) => {
+    const cursor = document.getElementById("virtualCursor");
+    cursor.style.left = `${e.clientX}px`;
+    cursor.style.top = `${e.clientY}px`;
+  });
+
 </script>
 </body>
 </html>
