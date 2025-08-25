@@ -6,8 +6,6 @@ import {
   getValue
 } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-remote-config.js";
 
-
-// 2) Your Firebase config (copy/paste from console)
 const firebaseConfig = {
   apiKey: "AIzaSyAHCYxUClxGazeEdwYeLPCM4bGDhjFCnCY",
   authDomain: "koulu-info-tv.firebaseapp.com",
@@ -18,21 +16,17 @@ const firebaseConfig = {
   measurementId: "G-PNEQEXEC7C"
 };
 
-// 3) Init Firebase + Analytics
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 getAnalytics(app);
 
-// 4) Init Remote Config with defaults + settings
 const remoteConfig = getRemoteConfig(app);
 remoteConfig.settings = {
-  minimumFetchIntervalMillis: 60_000  // poll every 60 seconds
+  minimumFetchIntervalMillis: 60_000  
 };
 remoteConfig.defaultConfig = {
-  // use a version string so you can bump instead of flipping booleans
   refresh_version: "v1"
 };
 
-// 5) Export only what the page needs
 export { remoteConfig, fetchAndActivate, getValue };
 
