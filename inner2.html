@@ -41,48 +41,55 @@
 <body>
   <iframe
   id="slideshowFrame"
-  src="https://docs.google.com/presentation/d/e/2PACX-1vQwfM3Ns0fWrfCjer7gYcTTJ_d96j7WlZ0RPTY_t9I_mtR1E-05P3PVy9wnYkuPmPmXWdYOjl8LGlAC/embed?start=true&loop=true&delayms=5000&rm=minimal"
+  src="https://docs.google.com/presentation/d/e/2PACX-1vQwfM3Ns0fWrfCjer7gYcTTJ_d96j7WlZ0RPTY_t9I_mtR1E-05P3PVy9wnYkuPmPmXWdYOjl8LGlAC/pubembed?start=true&loop=true&delayms=7000&rm=minimal"
   style="width: 100vw; height: 100vh; border: none; display: block;"
   allowfullscreen
 ></iframe>
   
 
   <script>
-  // Set the interval time in milliseconds (e.g., 5000ms = 5 seconds)
   const CHECK_INTERVAL = 60000;
-  
-  // Your Apps Script endpoint
-  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby8X53IgB9gmaBjnt2wbxtlNiHucPs_ZjOK3LJvrbocxAM4qdRM6dup0JCxP2fmmGgF/exec";
-
-  let countdown = CHECK_INTERVAL / 1000;
-  const countdownDisplay = document.getElementById("timeUntilNext");
-
-    // Countdown updater
-  setInterval(() => {
-      countdown = CHECK_INTERVAL / 1000;
-      countdownDisplay.textContent = countdown;
-
     
-  // Function to check status and refresh if needed
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby8X53IgB9gmaBjnt2wbxtlNiHucPs_ZjOK3LJvrbocxAM4qdRM6dup0JCxP2fmmGgF/exec";
+  
+  
   function checkStatusAndRefresh() {
-    fetch(SCRIPT_URL)
-      .then(response => response.text())
-      .then(data => {
-        const status = Number(data.trim()); // Convert "1" to 1
-        console.log("Status received:", status);
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", SCRIPT_URL, true);
   
-        if (status === 1) {
-          console.log("Status is 1 — refreshing page.");
-          location.reload();
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === 4) {
+        if (xhr.status === 200) {
+          var responseText = xhr.responseText.trim();
+          var status = Number(responseText);
+  
+          console.log("Received status:", status);
+  
+          if (status === 1) {
+            console.log("Status is 1 — refreshing page.");
+            location.reload();
+          } else {
+            console.log("Status is not 1 — no action taken.");
+          }
+        } else {
+          console.error("Request failed with status:", xhr.status);
         }
-      })
-      .catch(error => {
-        console.error("Error fetching status:", error);
-      });
-  }
+      }
+    };
   
-  // Start the timed execution
+    xhr.onerror = function () {
+      console.error("Network error occurred.");
+    };
+  
+    xhr.send();
+  
+
+
+    };
+  
+  
   setInterval(checkStatusAndRefresh, CHECK_INTERVAL);
+
   </script>
 
   <div id="debugMenu">
