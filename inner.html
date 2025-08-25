@@ -49,15 +49,13 @@
 
   <script>
   const CHECK_INTERVAL = 60000;
-
-  // Your Apps Script endpoint
+    
   const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby8X53IgB9gmaBjnt2wbxtlNiHucPs_ZjOK3LJvrbocxAM4qdRM6dup0JCxP2fmmGgF/exec";
   
   
-  // Function to check status and refresh if needed
   function checkStatusAndRefresh() {
     var xhr = new XMLHttpRequest();
-    xhr.open("GET", SCRIPT_URL, true); // Replace SCRIPT_URL with your actual URL
+    xhr.open("GET", SCRIPT_URL, true);
   
     xhr.onreadystatechange = function () {
       if (xhr.readyState === 4) {
@@ -89,7 +87,7 @@
 
     };
   
-  // Start the timed execution
+  
   setInterval(checkStatusAndRefresh, CHECK_INTERVAL);
 
   </script>
