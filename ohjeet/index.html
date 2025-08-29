@@ -170,8 +170,8 @@
         <a href="https://t4.oseale.com/slides-edit-login/auth.html"><button>Muokkaa slides esitystä</button></a>
         <a href="https://t4.oseale.com/slides-edit-login/menu-auth.html"><button>Muokkaa ruokalistan sisältöä</button></a>
         <div class="dropdown">
-        <button class="dropbtn" id="dropdownToggle">Lisää linkkejä ⌄</button>
-        <div class="dropdown-content" id="dropdownMenu">
+        <button class="dropbtn" data-dropdown-toggle="dropdownMenu">Lisää linkkejä ⌄</button>
+        <div class="dropdown-content" id="dropdownMenu1">
             <a href="https://t4.oseale.com/cpanel/sheets-auth.html">Sheets ohjauspaneeli</a>
             <a href="https://script.google.com/home/projects/1T1lyWuX-FrJ6XsdJxoLPW--NhUgqPmSWlBSs7n2FVVAyitfwjc3mUnyE/edit">Google apps script (Etä päivitys)</a>
             <a href="https://script.google.com/home/projects/13eG0tXEP2T4Rybifdsgmkcx0NIAkgijqTRLrchRNvqvqV4aacuoy6umH/edit">Google apps script (Ruokalista päivitys)</a>
@@ -181,7 +181,7 @@
         </div>
         </div>
         <div class="dropdown">
-        <button class="dropbtn" id="dropdownToggle2">Lisää linkkejä ⌄</button>
+        <button class="dropbtn" data-dropdown-toggle="dropdownMenu2">Lisää linkkejä ⌄</button>
         <div class="dropdown-content" id="dropdownMenu2">
             <a href="https://t4.oseale.com/cpanel/sheets-auth.html">Sheets ohjauspaneeli</a>
             <a href="https://script.google.com/home/projects/1T1lyWuX-FrJ6XsdJxoLPW--NhUgqPmSWlBSs7n2FVVAyitfwjc3mUnyE/edit">Google apps script (Etä päivitys)</a>
@@ -192,43 +192,26 @@
         </div>
         </div>
         <script>
-        const toggleBtn = document.getElementById("dropdownToggle");
-        const dropdown = document.getElementById("dropdownMenu");
-
+        document.querySelectorAll("[data-dropdown-toggle]").forEach(toggleBtn => {
         toggleBtn.addEventListener("click", () => {
-        if (dropdown.classList.contains("show")) {
+          const dropdownId = toggleBtn.getAttribute("data-dropdown-toggle");
+          const dropdown = document.getElementById(dropdownId);
+    
+          if (dropdown.classList.contains("show")) {
             // Collapse
-            dropdown.style.maxHeight = dropdown.scrollHeight + "px"; // Set current height
+            dropdown.style.maxHeight = dropdown.scrollHeight + "px";
             requestAnimationFrame(() => {
-            dropdown.style.maxHeight = "0";
-            dropdown.classList.remove("show");
+              dropdown.style.maxHeight = "0";
+              dropdown.classList.remove("show");
             });
-        } else {
+          } else {
             // Expand
             dropdown.classList.add("show");
             dropdown.style.maxHeight = dropdown.scrollHeight + "px";
-        }
+          }
         });
-        </script>
-        <script>
-        const toggleBtn = document.getElementById("dropdownToggle2");
-        const dropdown = document.getElementById("dropdownMenu2");
-
-        toggleBtn.addEventListener("click", () => {
-        if (dropdown.classList.contains("show")) {
-            // Collapse
-            dropdown.style.maxHeight = dropdown.scrollHeight + "px"; // Set current height
-            requestAnimationFrame(() => {
-            dropdown.style.maxHeight = "0";
-            dropdown.classList.remove("show");
-            });
-        } else {
-            // Expand
-            dropdown.classList.add("show");
-            dropdown.style.maxHeight = dropdown.scrollHeight + "px";
-        }
-        });
-        </script>
+      });
+      </script>
         <div class="footer">&copy 2025 Oseale.</div>
     </div>
 </body>
