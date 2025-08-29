@@ -181,8 +181,8 @@
         </div>
         </div>
         <div class="dropdown">
-        <button class="dropbtn" id="dropdownToggle">Lisää linkkejä ⌄</button>
-        <div class="dropdown-content" id="dropdownMenu">
+        <button class="dropbtn" id="dropdownToggle2">Lisää linkkejä ⌄</button>
+        <div class="dropdown-content" id="dropdownMenu2">
             <a href="https://t4.oseale.com/cpanel/sheets-auth.html">Sheets ohjauspaneeli</a>
             <a href="https://script.google.com/home/projects/1T1lyWuX-FrJ6XsdJxoLPW--NhUgqPmSWlBSs7n2FVVAyitfwjc3mUnyE/edit">Google apps script (Etä päivitys)</a>
             <a href="https://script.google.com/home/projects/13eG0tXEP2T4Rybifdsgmkcx0NIAkgijqTRLrchRNvqvqV4aacuoy6umH/edit">Google apps script (Ruokalista päivitys)</a>
@@ -194,6 +194,25 @@
         <script>
         const toggleBtn = document.getElementById("dropdownToggle");
         const dropdown = document.getElementById("dropdownMenu");
+
+        toggleBtn.addEventListener("click", () => {
+        if (dropdown.classList.contains("show")) {
+            // Collapse
+            dropdown.style.maxHeight = dropdown.scrollHeight + "px"; // Set current height
+            requestAnimationFrame(() => {
+            dropdown.style.maxHeight = "0";
+            dropdown.classList.remove("show");
+            });
+        } else {
+            // Expand
+            dropdown.classList.add("show");
+            dropdown.style.maxHeight = dropdown.scrollHeight + "px";
+        }
+        });
+        </script>
+        <script>
+        const toggleBtn = document.getElementById("dropdownToggle2");
+        const dropdown = document.getElementById("dropdownMenu2");
 
         toggleBtn.addEventListener("click", () => {
         if (dropdown.classList.contains("show")) {
