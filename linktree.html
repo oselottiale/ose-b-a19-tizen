@@ -41,7 +41,7 @@
         text-align: center;
         color: #333333;
         font-family: Arial, Helvetica, sans-serif;
-        font-size: 44px;
+        font-size: 42px;
         }
         
 
@@ -109,37 +109,68 @@
         }
 
         .dropdown-content {
-        will-change: max-height, opacity;
-        max-height: 0;
-        opacity: 0;
+        will-change: max-height, opacity, padding;
         overflow: hidden;
-        transition: max-height 0.4s ease, opacity 0.4s ease;
+        transition:
+          max-height 0.6s ease,
+          padding-top 0.6s ease,
+          padding-bottom 0.6s ease,
+          opacity 0.6s ease,
+          border-color 0.6s ease 0.1s;
         border: 4px solid #FFD700;
         background-color: #f9f9f9;
-        width: 100%;
+        width: calc(100% - 8px);
         max-width: 500px;
+        max-height: 0;
         box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
         z-index: 1;
         border-radius: 6px;
-        padding: 0;
+        padding-top: 0;
+        padding-bottom: 0;
+        display: none;
+        }
+
+        .dropdown-content.opening {
+          transition-duration: 0.8s; 
+        }
+
+        .dropdown-content.hide {
+        opacity: 0;
+        }
+
+        .dropdown-content:not(.is-open) {
+          border-color: transparent; /* fade out when closing */
         }
 
         .dropdown-content.show {
-        max-height: 500px;
-        opacity: 1;
-        padding: 12px 0;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+          display: block;
+        }
+
+        .dropdown-content.is-open {
+          max-height: 600px;
+          padding-top: 12px;
+          padding-bottom: 12px;
+          opacity: 1;
+          pointer-events: auto;
+          border-color: #FFD700;
         }
 
         .dropdown-content a {
         opacity: 0;
         transform: translateY(-10px);
-        transition: opacity 0.3s ease, transform 0.3s ease;
+        transition:
+          opacity 0.4s ease,
+          transform 0.4s ease;
         }
 
-        .dropdown-content.show a {
-        opacity: 1;
-        transform: translateY(0);
+        .dropdown-content:not(.is-open) a {
+          opacity: 0;
+          transform: translateY(-10px);
+        }
+
+        .dropdown-content.is-open a {
+          opacity: 1;
+          transform: translateY(0);
         }
 
         .dropdown-content a {
@@ -153,12 +184,9 @@
         background-color: #ddd;
         }
 
-        /* Show dropdown when active */
         .dropdown-content.show {
         display: block;
         }
-
-
     </style>
 </head>
 <body>
@@ -170,8 +198,8 @@
         <a href="https://t4.oseale.com/slides-edit-login/auth.html"><button>Muokkaa slides esitystä</button></a>
         <a href="https://t4.oseale.com/slides-edit-login/menu-auth.html"><button>Muokkaa ruokalistan sisältöä</button></a>
         <div class="dropdown">
-        <button class="dropbtn" id="dropdownToggle">Lisää linkkejä ⌄</button>
-        <div class="dropdown-content" id="dropdownMenu">
+        <button class="dropbtn" data-dropdown-toggle="dropdownMenu1">Lisää linkkejä ⌄</button>
+        <div class="dropdown-content" id="dropdownMenu1">
             <a href="https://t4.oseale.com/cpanel/sheets-auth.html">Sheets ohjauspaneeli</a>
             <a href="https://script.google.com/home/projects/1T1lyWuX-FrJ6XsdJxoLPW--NhUgqPmSWlBSs7n2FVVAyitfwjc3mUnyE/edit">Google apps script (Etä päivitys)</a>
             <a href="https://script.google.com/home/projects/13eG0tXEP2T4Rybifdsgmkcx0NIAkgijqTRLrchRNvqvqV4aacuoy6umH/edit">Google apps script (Ruokalista päivitys)</a>
@@ -181,24 +209,42 @@
         </div>
         </div>
         <script>
-        const toggleBtn = document.getElementById("dropdownToggle");
-        const dropdown = document.getElementById("dropdownMenu");
+        document.querySelectorAll('[data-dropdown-toggle]').forEach(toggle => {
+        const menu = document.getElementById(toggle.dataset.dropdownToggle);
+        if (!menu) return;
 
-        toggleBtn.addEventListener("click", () => {
-        if (dropdown.classList.contains("show")) {
-            // Collapse
-            dropdown.style.maxHeight = dropdown.scrollHeight + "px"; // Set current height
-            requestAnimationFrame(() => {
-            dropdown.style.maxHeight = "0";
-            dropdown.classList.remove("show");
-            });
-        } else {
-            // Expand
-            dropdown.classList.add("show");
-            dropdown.style.maxHeight = dropdown.scrollHeight + "px";
-        }
+        // Start completely hidden
+        menu.classList.remove('show', 'is-open', 'opening');
+
+        // After collapse finishes, remove display:block
+        menu.addEventListener('transitionend', e => {
+          if (e.propertyName === 'max-height' && !menu.classList.contains('is-open')) {
+            menu.classList.remove('show');
+          }
         });
-        </script>
+
+        toggle.addEventListener('click', () => {
+          const isOpen = menu.classList.contains('is-open');
+
+          if (isOpen) {
+            // Start closing: fast transition
+            menu.classList.remove('is-open');
+            menu.classList.remove('opening'); // Ensure slow class is gone
+          } else {
+            // Opening: slow transition
+            menu.classList.add('show'); // 1. make it display:block
+            void menu.offsetHeight;     // 2. force layout reflow
+            menu.classList.add('opening'); // 3. add slow transition class
+            menu.classList.add('is-open'); // 4. trigger animation
+
+            // 5. remove 'opening' after animation completes
+            setTimeout(() => {
+              menu.classList.remove('opening');
+            }, 800); // Match your slow transition duration
+          }
+        });
+      });
+    </script>
         <div class="footer">&copy 2025 Oseale.</div>
     </div>
 </body>
