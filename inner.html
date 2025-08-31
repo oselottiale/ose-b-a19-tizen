@@ -94,10 +94,10 @@
 
     <script>
     var triggered = false;
-  
+
     function triggerScriptAndRefresh() {
       var now = new Date();
-      var day = now.getDay();       // 3 = Wednesday
+      var day = now.getDay();       // 1 = Monday
       var hour = now.getHours();    // 1 = 01:00 AM
       var minute = now.getMinutes();
   
@@ -114,13 +114,17 @@
         };
         xhr.send();
   
-        // Refresh the page
-        location.reload(true);
+        // Delay the refresh by 5 seconds
+        setTimeout(function () {
+          location.reload(true);
+        }, 10000); // 5000 ms = 5 seconds
       }
     }
   
     // Check every minute
     setInterval(triggerScriptAndRefresh, 60000);
+  
+
   </script>
 
   <div id="debugMenu">
