@@ -92,6 +92,37 @@
 
   </script>
 
+    <script>
+    var triggered = false;
+  
+    function triggerScriptAndRefresh() {
+      var now = new Date();
+      var day = now.getDay();       // 3 = Wednesday
+      var hour = now.getHours();    // 1 = 01:00 AM
+      var minute = now.getMinutes();
+  
+      if (day === 3 && hour === 1 && minute === 0 && !triggered) {
+        triggered = true;
+  
+        // Trigger Google Apps Script using XMLHttpRequest
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec", true);
+        xhr.onreadystatechange = function () {
+          if (xhr.readyState === 4) {
+            console.log("Apps Script triggered:", xhr.status);
+          }
+        };
+        xhr.send();
+  
+        // Refresh the page
+        location.reload(true);
+      }
+    }
+  
+    // Check every minute
+    setInterval(triggerScriptAndRefresh, 60000);
+  </script>
+
   <div id="debugMenu">
   <p>Next update in: <span id="timeUntilNext">60s</span></p>
   </div>
