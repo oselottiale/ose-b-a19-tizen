@@ -40,9 +40,40 @@
     .debug-visible #debugMenu {
       display: block;
     }
+
+    #slideshowFrame {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 1;
+    }
+
+    #overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 9999;
+      cursor: none;
+      pointer-events: auto; /* allows input to pass through */
+      display: none;
+    }
+
+
+    body.hide-cursor {
+      cursor: none;
+    }
+
+    
+
+
   </style>
 </head>
 <body>
+  <div id="overlay"></div>
   <iframe
   id="slideshowFrame"
   src="https://docs.google.com/presentation/d/e/2PACX-1vQwfM3Ns0fWrfCjer7gYcTTJ_d96j7WlZ0RPTY_t9I_mtR1E-05P3PVy9wnYkuPmPmXWdYOjl8LGlAC/pubembed?start=true&loop=true&delayms=7000&rm=minimal"
@@ -50,6 +81,16 @@
   allowfullscreen
 ></iframe>
   
+  <script>
+  window.addEventListener('message', (event) => {
+    if (event.data?.fullscreen === true) {
+      document.getElementById('overlay').style.display = 'block';
+    } else {
+      document.getElementById('overlay').style.display = 'none';
+    }
+  });
+
+  </script>
 
   <script>
   const CHECK_INTERVAL = 60000;
