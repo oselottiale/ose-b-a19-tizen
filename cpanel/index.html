@@ -210,7 +210,7 @@
 <body>
     <div id="refreshOverlay" style="display: none;">
         <div class="overlay-content">
-            <p>🔄 Päivitys käynnissä. Älä sulje tai päivitä sivua. Päivitys valmistuu noin minuutissa.</p>
+            <p>Päivitetään voit sulkea sivun milloin tahansa.</p>
             <div id="statusBox" style="display: none;"></div>
             <div id="timer" style="display: none; font-size: 26px; color: black; margin-top: 20px; font-family: Arial, Helvetica, sans-serif;">Aikaa jäljellä: 1:10</div>
         </div>
@@ -281,17 +281,6 @@
             }
         }
         
-        function handleStatusReset(data) {
-            if (data.success) {
-                statusBox.textContent = "Status reset to 0. You may now close the tab.";
-                document.getElementById("refreshOverlay").style.display = "none";
-            } else {
-                statusBox.textContent = "Error resetting status. Please try again.";
-            }
-            button.disabled = false;
-            timerDisplay.style.display = "none";
-        }
-        
         function startCountdown() {
             let secondsLeft = 70;
             statusBox.style.display = "none";
@@ -306,7 +295,7 @@
         
                 if (secondsLeft <= 0) {
                     clearInterval(timer);
-                    sendStatus("0", "handleStatusReset");
+                    document.getElementById("refreshOverlay").style.display = "none";
                 }
             }, 1000);
         }
