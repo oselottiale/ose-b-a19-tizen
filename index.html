@@ -95,16 +95,17 @@
   <script>
   async function loadAlert() {
     try {
-      const response = await fetch("https://t4.oseale.com/alert.json", {
+      const timestamp = new Date().getTime();
+      const response = await fetch(`https://t4.oseale.com/alert.json?nocache=${timestamp}`, {
         cache: "no-store"
       });
       const data = await response.json();
 
+      const alertBox = document.getElementById("topAlert");
+
       if (data.visible && data.message) {
-        const alertBox = document.getElementById("topAlert");
         alertBox.innerHTML = data.message;
 
-        // Apply styles
         alertBox.style.display = "block";
         alertBox.style.position = "fixed";
         alertBox.style.top = "0";
@@ -118,7 +119,6 @@
         alertBox.style.zIndex = "10000";
         alertBox.style.boxShadow = "0 2px 5px rgba(0,0,0,0.2)";
 
-        // Add close button if enabled
         if (data.closable) {
           const closeBtn = document.createElement("button");
           closeBtn.textContent = "✖";
@@ -131,9 +131,12 @@
           closeBtn.onclick = () => alertBox.style.display = "none";
           alertBox.appendChild(closeBtn);
         }
+      } else {
+        alertBox.style.display = "none";
       }
     } catch (error) {
       console.error("Alert fetch failed:", error);
+      document.getElementById("topAlert").style.display = "none";
     }
   }
 
@@ -145,9 +148,9 @@
     if (iframe.requestFullscreen) {
       iframe.requestFullscreen();
     } else if (iframe.webkitRequestFullscreen) {
-      iframe.webkitRequestFullscreen(); // Safari
+      iframe.webkitRequestFullscreen(); 
     } else if (iframe.msRequestFullscreen) {
-      iframe.msRequestFullscreen(); // IE11
+      iframe.msRequestFullscreen(); 
     }
   }
 
@@ -166,7 +169,7 @@
   <script>
   document.addEventListener('fullscreenchange', () => {
     const isFullscreen = !!document.fullscreenElement;
-    const iframe = document.getElementById('lowerIframe'); // ✅ correct ID
+    const iframe = document.getElementById('lowerIframe'); 
     if (iframe && iframe.contentWindow) {
       iframe.contentWindow.postMessage({ fullscreen: isFullscreen }, '*');
     }
