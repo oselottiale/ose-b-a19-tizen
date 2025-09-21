@@ -3,5 +3,5 @@
   "visible": true,
   "backgroundColor": "#ffcc00",
   "textColor": "#000000",
-  "closable": true
+  "closable": false
 }
