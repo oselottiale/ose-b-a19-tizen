@@ -1,6 +1,6 @@
 {
   "message": "Info-TV päivitys.",
-  "visible": true,
+  "visible": false,
   "backgroundColor": "#00bbff",
   "textColor": "#ffffff",
   "closable": false
