@@ -1,7 +1,7 @@
 {
   "message": "testi",
-  "visible": false,
+  "visible": true,
   "backgroundColor": "#00bbff",
   "textColor": "#ffffff",
-  "closable": false
+  "closable": true
 }
