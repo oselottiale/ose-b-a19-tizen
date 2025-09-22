@@ -1,7 +1,7 @@
 {
-  "message": "testi",
-  "visible": false,
-  "backgroundColor": "#00bbff",
+  "message": "Peltsin ja opo infotaulun järjestelmää päivitetään järjestelmässä voi olla ongelmia tällä viikolla.",
+  "visible": true,
+  "backgroundColor": "#BA2300",
   "textColor": "#ffffff",
   "closable": true
 }
