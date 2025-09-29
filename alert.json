@@ -1,6 +1,6 @@
 {
   "message": "Infotaulujen järjestelmää päivitetään tällä viikolla.",
-  "visible": true,
+  "visible": false,
   "backgroundColor": "#BA2300",
   "textColor": "#ffffff",
   "closable": true
