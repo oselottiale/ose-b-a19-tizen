@@ -1,7 +1,7 @@
 {
-  "message": "T4.oseale.com | Päivitykset ovat hitaita TET-jakson aikana.",
-  "visible": false,
-  "backgroundColor": "#BA2300",
+  "message": "Kirjautuminen ei toimi tilapäisesti se korjataan viimeistään 31.12.",
+  "visible": true,
+  "backgroundColor": "#FF0000",
   "textColor": "#ffffff",
-  "closable": true
+  "closable": false
 }
