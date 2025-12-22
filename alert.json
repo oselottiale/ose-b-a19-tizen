@@ -1,6 +1,6 @@
 {
   "message": "Kirjautuminen ei toimi tilapäisesti se korjataan viimeistään 31.12.",
-  "visible": true,
+  "visible": false,
   "backgroundColor": "#FF0000",
   "textColor": "#ffffff",
   "closable": true
