@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard</title>
+
+  <style>
+    #loading {
+      width: 100%;
+      padding: 40px;
+      text-align: center;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .ldr {
+      text-align: center;
+      margin-top: 10px;
+      font-size: 14px;
+      opacity: 0.7;
+    }
+
+    #app {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="loading">Ladataan…</div>
+
+  <div class="ldr">Valmistellaan kojelautaa…</div>
+  <div class="ldr">Haetaan tietoja…</div>
+
+  <div id="app"></div>
+
+  <script type="module" src="https://t4.oseale.com/firebaseauth.js"></script>
+
+  <script src="https://t4.oseale.com/auth.js"></script>
+
+</body>
+</html>
