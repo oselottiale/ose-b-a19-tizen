@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
 import { getAuth } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAHCYxUClxGazeEdwYeLPCM4bGDhjFCnCY",
@@ -15,5 +15,6 @@ const auth = getAuth(app);
 
 window.firebaseApp = app;
 window.firebaseAuth = auth;
+window.firebaseSignIn = signInWithEmailAndPassword;
 
 window.dispatchEvent(new Event("firebase-ready"));
