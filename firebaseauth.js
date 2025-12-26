@@ -14,3 +14,5 @@ const auth = getAuth(app);
 
 window.firebaseApp = app;
 window.firebaseAuth = auth;
+
+window.dispatchEvent(new Event("firebase-ready"));
