@@ -89,7 +89,6 @@
       const passwordInput = document.getElementById("password");
 
       let redirectTo = window.location.search.substring(1).trim();
-
       try { redirectTo = decodeURIComponent(redirectTo); } catch(e) {}
 
       if (redirectTo) {
@@ -104,7 +103,7 @@
         const email = "admin@oseale.com";
 
         try {
-          await firebaseAuth.signInWithEmailAndPassword(email, password);
+          await firebaseSignIn(firebaseAuth, email, password);
 
           if (redirectTo) {
             window.location.href = redirectTo;
