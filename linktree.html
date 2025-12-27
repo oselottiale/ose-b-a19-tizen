@@ -24,7 +24,7 @@
         }
 
         .box {
-        width: calc(100vw - 40px); /* Adjust padding/margin as needed */
+        width: calc(100vw - 40px);
         }
 
         .box {
@@ -141,7 +141,7 @@
         }
 
         .dropdown-content:not(.is-open) {
-          border-color: transparent; /* fade out when closing */
+          border-color: transparent; 
         }
 
         .dropdown-content.show {
@@ -189,6 +189,9 @@
         .dropdown-content.show {
         display: block;
         }
+        #hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -204,7 +207,7 @@
         <a href="https://t5.oseale.com/slides-edit-login/auth.html"><button>Muokkaa slides esitystä</button></a>
         <h2>Muut linkit</h2>
         <div class="dropdown">
-        <button class="dropbtn" data-dropdown-toggle="dropdownMenu1">Lisää linkkejä ⌄</button>
+        <button class="dropbtn" data-dropdown-toggle="dropdownMenu1" id="hidden">Lisää linkkejä ⌄</button>
         <div class="dropdown-content" id="dropdownMenu1">
             <a href="https://t4.oseale.com/cpanel/sheets-auth.html">Sheets ohjauspaneeli</a>
             <a href="https://script.google.com/home/projects/1T1lyWuX-FrJ6XsdJxoLPW--NhUgqPmSWlBSs7n2FVVAyitfwjc3mUnyE/edit">Google apps script (Etä päivitys)</a>
@@ -219,10 +222,7 @@
         const menu = document.getElementById(toggle.dataset.dropdownToggle);
         if (!menu) return;
 
-        // Start completely hidden
         menu.classList.remove('show', 'is-open', 'opening');
-
-        // After collapse finishes, remove display:block
         menu.addEventListener('transitionend', e => {
           if (e.propertyName === 'max-height' && !menu.classList.contains('is-open')) {
             menu.classList.remove('show');
@@ -233,20 +233,17 @@
           const isOpen = menu.classList.contains('is-open');
 
           if (isOpen) {
-            // Start closing: fast transition
             menu.classList.remove('is-open');
-            menu.classList.remove('opening'); // Ensure slow class is gone
+            menu.classList.remove('opening'); 
           } else {
-            // Opening: slow transition
-            menu.classList.add('show'); // 1. make it display:block
-            void menu.offsetHeight;     // 2. force layout reflow
-            menu.classList.add('opening'); // 3. add slow transition class
-            menu.classList.add('is-open'); // 4. trigger animation
+            menu.classList.add('show');
+            void menu.offsetHeight;
+            menu.classList.add('opening');
+            menu.classList.add('is-open');
 
-            // 5. remove 'opening' after animation completes
             setTimeout(() => {
               menu.classList.remove('opening');
-            }, 800); // Match your slow transition duration
+            }, 800);
           }
         });
       });
