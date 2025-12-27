@@ -88,7 +88,19 @@
       const loginBtn = document.getElementById("loginBtn");
       const passwordInput = document.getElementById("password");
 
-      let redirectTo = window.location.search.substring(1).trim();
+      const params = new URLSearchParams(window.location.search);
+      let redirectTo = params.get("uudelleenohjaus");
+      
+      if (redirectTo) {
+        try { redirectTo = decodeURIComponent(redirectTo); } catch(e) {}
+      
+        redirectTo = redirectTo.replace(/,/g, "/");
+      
+        if (!redirectTo.startsWith("http")) {
+          redirectTo = "https://" + redirectTo;
+        }
+      }
+
       try { redirectTo = decodeURIComponent(redirectTo); } catch(e) {}
 
       if (redirectTo) {
