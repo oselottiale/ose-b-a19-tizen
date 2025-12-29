@@ -6,6 +6,7 @@
     <link rel="icon" href="https://t4.oseale.com/favicon.png?v=2" type="image/png">
     <style>
         body {
+        visibility: hidden;
         margin: 0;
         padding: 0;
         overflow-x: hidden;
@@ -196,6 +197,7 @@
 </head>
 <body>
     <div class="box">
+        <button id="kirjaudu">Ladataan...</button>
         <img src="https://t4.oseale.com/oseale-logo.png" width="100px" height="100px">
         <h1>Peltsin ja opo infotaulun linkit.</h1>
         <h2>Peltsin Infotaulu</h2>
@@ -250,7 +252,33 @@
     </script>
         <div class="footer">&copy 2025 Oseale.</div>
     </div>
-</body>
+    <script>
+    function initKirjauduButton() {
+      const btn = document.getElementById("kirjaudu");
+      if (!btn || !window.firebaseAuth) return;
+
+      firebaseAuth.onAuthStateChanged(user => {
+        if (user) {
+          btn.textContent = "Kirjaudu ulos";
+          btn.onclick = () => firebaseAuth.signOut();
+        } else {
+          btn.textContent = "Kirjaudu sisään";
+          btn.onclick = () => window.location.href = "https://t4.oseale.com/kirjaudu/";
+        }
+
+        document.body.style.visibility = "visible";
+      });
+    }
+
+    if (!window.firebaseAuth) {
+      window.addEventListener("firebase-ready", initKirjauduButton);
+    } else {
+      initKirjauduButton();
+    }
+  </script>
     
+</body>
+
+
 
 </html>
