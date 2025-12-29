@@ -90,8 +90,8 @@
 
       const params = new URLSearchParams(window.location.search);
       let redirectTo = params.get("uudelleenohjaus");
-      
-      if (redirectTo) {
+
+      if (typeof redirectTo === "string" && redirectTo.trim() !== "") {
         try { redirectTo = decodeURIComponent(redirectTo); } catch(e) {}
       
         redirectTo = redirectTo.replace(/,/g, "/");
@@ -99,6 +99,8 @@
         if (!redirectTo.startsWith("http")) {
           redirectTo = "https://" + redirectTo;
         }
+      } else {
+        redirectTo = "https://t4.oseale.com/linktree.html";
       }
 
       try { redirectTo = decodeURIComponent(redirectTo); } catch(e) {}
