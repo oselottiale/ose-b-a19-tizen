@@ -223,10 +223,10 @@
           position: fixed;
           inset: 0;
           backdrop-filter: blur(8px);
-          background: rgba(0, 0, 0, 0.2); 
+          background: rgba(0, 0, 0, 0.2);
           opacity: 0;
           pointer-events: none;
-          transition: opacity 0.3s ease;
+          transition: opacity 0.35s ease;
           z-index: 9000;
         }
 
@@ -243,7 +243,7 @@
           position: fixed;
           top: 50%;
           left: 50%;
-          transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%) scale(0.95);
           background: #1e3c72;
           color: white;
           padding: 16px 28px;
@@ -251,11 +251,14 @@
           font-size: 18px;
           font-weight: 600;
           box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+
           opacity: 0;
           pointer-events: none;
+
+          transition:
+            opacity 0.35s ease,
+            transform 0.35s ease;
           z-index: 9999;
-          transform: translate(-50%, -50%) scale(0.95);
-          transition: opacity 0.4s ease, transform 0.3s ease;
         }
 
         .notification.show {
@@ -366,28 +369,28 @@
   </div>
   <script>
   function showLogoutNotification() {
-  const note = document.getElementById("logout-notification");
-  const blur = document.getElementById("blur-overlay");
+    const note = document.getElementById("logout-notification");
+    const blur = document.getElementById("blur-overlay");
 
-  if (!note || !blur) return;
+    if (!note || !blur) return;
 
-  blur.classList.remove("hidden");
-  blur.classList.add("show");
+    blur.classList.remove("hidden");
+    note.classList.remove("hidden");
 
-  note.classList.remove("hidden");
-  note.classList.add("show");
-
-  setTimeout(() => {
-    note.classList.remove("show");
-    blur.classList.remove("show");
+    blur.classList.add("show");
+    note.classList.add("show");
 
     setTimeout(() => {
-      note.classList.add("hidden");
-      blur.classList.add("hidden");
-    }, 400); 
-  }, 2500);
-}
-</script>
+      note.classList.remove("show");
+      blur.classList.remove("show");
+
+      setTimeout(() => {
+        note.classList.add("hidden");
+        blur.classList.add("hidden");
+      }, 350);
+    }, 2500);
+  }
+  </script>
 </body>
 
 
