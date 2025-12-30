@@ -241,24 +241,26 @@
 
         .notification {
           position: fixed;
-          bottom: 24px;
+          top: 50%;
           left: 50%;
-          transform: translateX(-50%);
+          transform: translate(-50%, -50%);
           background: #1e3c72;
           color: white;
-          padding: 12px 24px;
-          border-radius: 8px;
-          font-size: 16px;
+          padding: 16px 28px;
+          border-radius: 10px;
+          font-size: 18px;
           font-weight: 600;
-          box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+          box-shadow: 0 4px 12px rgba(0,0,0,0.25);
           opacity: 0;
           pointer-events: none;
-          transition: opacity 0.4s ease;
           z-index: 9999;
+          transform: translate(-50%, -50%) scale(0.95);
+          transition: opacity 0.4s ease, transform 0.3s ease;
         }
 
         .notification.show {
           opacity: 1;
+          transform: translate(-50%, -50%) scale(1);
         }
 
         .notification.hidden {
