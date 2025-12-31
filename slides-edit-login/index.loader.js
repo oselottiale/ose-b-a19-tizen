@@ -1,6 +1,12 @@
-firebaseAuth.currentUser.getIdToken().then(token => {
+async function slides() {
+  const token = await firebase.auth().currentUser.getIdToken();
   const from = encodeURIComponent(window.location.href);
 
-  window.location.href =
-    `https://script.google.com/macros/s/AKfycbyPDEf3_WietpXzUtwdAKbagY67WZGxzSpc6ZYYhS1W0vcliGE694CpckPXqTYlqcNuCQ/exec?token=${token}&from=${from}`;
-});
+  const res = await fetch(
+    `https://script.google.com/macros/s/AKfycbxvQs2pmXCVC-RVjY7-nKzve-fBCG7oO-bXVu4jLJNSc9HvLAIui1FuOrWH05XqAu8hMg/exec?token=${token}&from=${from}`
+  );
+
+  const data = await res.json();
+  
+  window.location.href = data.url;
+}
