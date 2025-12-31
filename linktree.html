@@ -269,9 +269,29 @@
         .notification.hidden {
           display: none;
         }
+
+        .ldr {
+        border: 12px solid #e0e0e0;
+        border-top: 12px solid #3498db;
+        border-bottom: 12px solid #FFD700;
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        animation: spin 2s linear infinite;
+        position: absolute;
+        inset: 0;
+        margin: auto;
+        z-index: 1;
+        }
+
+        @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+        }
   </style>
 </head>
 <body>
+    <div class="ldr"></div>
     <div class="box">
       <div class="parent">
         <div class="div1"> </div>
