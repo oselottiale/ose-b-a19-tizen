@@ -1,5 +1,5 @@
 async function slides() {
-  const user = firebase.auth().currentUser;
+  const user = firebaseAuth.currentUser;
   if (!user) {
     console.error("No user logged in");
     return;
