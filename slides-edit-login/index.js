@@ -1,5 +1,11 @@
 async function slides() {
-  const token = await firebase.auth().currentUser.getIdToken();
+  const user = firebase.auth().currentUser;
+  if (!user) {
+    console.error("No user logged in");
+    return;
+  }
+
+  const token = await user.getIdToken();
   const from = encodeURIComponent(window.location.href);
 
   const res = await fetch(
