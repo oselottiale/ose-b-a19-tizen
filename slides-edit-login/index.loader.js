@@ -11,4 +11,4 @@ async function slides() {
   window.location.href = data.url;
 }
 
-slides()
+slides();
