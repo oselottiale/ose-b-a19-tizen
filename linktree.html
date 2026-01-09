@@ -306,7 +306,7 @@
 
 <body>
     <div class="ldr"></div>
-    <div class="box">
+    <div class="box" id="box">
       <div class="parent">
         <div class="div1"><a href="https://t4.oseale.com/ohjeet" style="display:none;"><button class="btn2">Käyttöohjeet</button></a></div>
         <div class="div2"><img src="https://t4.oseale.com/oseale-logo.png" width="100px" height="100px"></div>
@@ -369,6 +369,7 @@
     </div>
     <script>
     function initKirjauduButton() {
+      const box = document.getElementById("box");
       const btn = document.getElementById("kirjaudu");
       if (!btn || !window.firebaseAuth) return;
 
