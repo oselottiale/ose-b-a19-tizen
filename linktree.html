@@ -6,7 +6,7 @@
     <link rel="icon" href="https://t4.oseale.com/favicon.png?v=2" type="image/png">
     <style>
         body {
-        visibility: hidden;
+        
         margin: 0;
         padding: 0;
         overflow-x: hidden;
@@ -25,6 +25,7 @@
         }
 
         .box {
+        visibility: hidden;
         width: calc(100vw - 40px);
         }
 
@@ -302,9 +303,9 @@
   </style>
 
 </head>
-<div class="ldr"></div>
+
 <body>
-    
+    <div class="ldr"></div>
     <div class="box">
       <div class="parent">
         <div class="div1"><a href="https://t4.oseale.com/ohjeet" style="display:none;"><button class="btn2">Käyttöohjeet</button></a></div>
@@ -384,7 +385,7 @@
           btn.onclick = () => window.location.href = "https://t4.oseale.com/kirjaudu/";
         }
 
-        document.body.style.visibility = "visible";
+        document.box.style.visibility = "visible";
       });
     }
 
