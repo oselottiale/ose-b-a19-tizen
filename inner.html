@@ -6,60 +6,32 @@
   <link rel="icon" href="https://t4.oseale.com/favicon.png?v=2" type="image/png">
   <title>Inner.html | t4.oseale.com</title>
   <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      overflow: hidden;
-      background-color: #000;
-    }
-    iframe {
-      border: none;
-      width: 100vw;
-      height: 100vh;
-      display: block;
-    }
-    #slideshowFrame {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      z-index: 1;
-    }
+    html, body { margin:0; padding:0; height:100%; overflow:hidden; background:#000; }
+    iframe { border:none; width:100vw; height:100vh; display:block; }
+    #slideshowFrame { position:fixed; top:0; left:0; width:100vw; height:100vh; z-index:1; }
     #debugMenu {
-      position: fixed;
-      bottom: 20px;
-      left: 20px;
-      padding: 10px;
-      background: #111;
-      color: #0f0;
-      border: 1px solid #0f0;
-      font-family: monospace;
-      z-index: 10000;
-      display: none;
-      white-space: pre;
+      position:fixed; bottom:20px; left:20px; padding:10px;
+      background:#111; color:#0f0; border:1px solid #0f0;
+      font-family:monospace; z-index:10000; display:none; white-space:pre;
     }
-    .debug-visible #debugMenu {
-      display: block;
-    }
+    .debug-visible #debugMenu { display:block; }
   </style>
 </head>
 <body>
   <iframe id="slideshowFrame" src="" allowfullscreen></iframe>
-
   <div id="debugMenu"></div>
 
   <script>
     var CONFIG_URL = "https://script.google.com/macros/s/AKfycbxVt8q-GsdsmC4linHgu7X3NlSTzKZUmNSrqJ70GkQ4KZx0dPpC1eMBYrfanYsglRowLQ/exec";
     var DEFAULT_ID = "19q6v5NqyDLkIB89l-IFuDSy2njVl7bPuESDeXtLZCCQ";
     var DEFAULT_DELAY = 7000;
+
     var lastConfigTime = "";
     var currentId = "";
     var currentDelay = "";
     var nextRefreshTime = "";
 
-    function loadConfig() {
+    function loadInitialConfig() {
       var xhr = new XMLHttpRequest();
       xhr.open("GET", CONFIG_URL, true);
 
@@ -72,17 +44,16 @@
           } else {
             cfg = {};
           }
-          applyConfig(cfg);
+          applyInitialConfig(cfg);
         }
       };
 
       xhr.send();
     }
 
-    function applyConfig(cfg) {
+    function applyInitialConfig(cfg) {
       var id = cfg.slideshowId || DEFAULT_ID;
       var delay = cfg.slideDelay || DEFAULT_DELAY;
-      var refreshFlag = cfg.refreshAll;
 
       currentId = id;
       currentDelay = delay;
@@ -95,12 +66,25 @@
         "&rm=minimal";
 
       document.getElementById("slideshowFrame").src = url;
+    }
 
-      if (refreshFlag === 1) {
-        setTimeout(function () {
-          location.reload(true);
-        }, 2000);
-      }
+    function checkRefreshFlag() {
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", CONFIG_URL, true);
+
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+          var cfg;
+          try { cfg = JSON.parse(xhr.responseText); }
+          catch (e) { cfg = {}; }
+
+          if (cfg.refreshAll === 1) {
+            location.reload(true);
+          }
+        }
+      };
+
+      xhr.send();
     }
 
     function scheduleNextMinute() {
@@ -110,7 +94,7 @@
       nextRefreshTime = next.toLocaleTimeString();
 
       setTimeout(function () {
-        loadConfig();
+        checkRefreshFlag();
         scheduleNextMinute();
       }, ms);
     }
@@ -121,7 +105,7 @@
       box.textContent =
         "Time: " + now +
         "\nNext refresh: " + nextRefreshTime +
-        "\nLast config: " + lastConfigTime +
+        "\nLast config load: " + lastConfigTime +
         "\nID: " + currentId +
         "\nDelay: " + currentDelay;
     }
@@ -134,8 +118,8 @@
       }
     });
 
-    loadConfig();
-    scheduleNextMinute(); 
+    loadInitialConfig();
+    scheduleNextMinute();
   </script>
 </body>
 </html>
