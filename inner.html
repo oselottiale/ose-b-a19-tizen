@@ -6,26 +6,28 @@
   <link rel="icon" href="https://t4.oseale.com/favicon.png?v=2" type="image/png">
   <title>Inner.html | t4.oseale.com</title>
   <style>
-    html.fullscreen-mode, body.fullscreen-mode {
-      cursor: none;
-    }
-    
     html, body {
       margin: 0;
       padding: 0;
       height: 100%;
       overflow: hidden;
-      background-color: #000; 
+      background-color: #000;
     }
-
     iframe {
       border: none;
       width: 100vw;
       height: 100vh;
       display: block;
     }
+    #slideshowFrame {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 1;
+    }
     #debugMenu {
-      display: none;
       position: fixed;
       bottom: 20px;
       left: 20px;
@@ -35,157 +37,105 @@
       border: 1px solid #0f0;
       font-family: monospace;
       z-index: 10000;
+      display: none;
+      white-space: pre;
     }
-    
     .debug-visible #debugMenu {
       display: block;
     }
-
-    #slideshowFrame {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      z-index: 1;
-    }
-
-    #overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      z-index: 9999;
-      cursor: none;
-      pointer-events: auto; /* allows input to pass through */
-      display: none;
-    }
-
-
-    body.hide-cursor {
-      cursor: none;
-    }
-
-    
-
-
   </style>
 </head>
 <body>
-  <div id="overlay"></div>
-  <iframe
-  id="slideshowFrame"
-  src="https://docs.google.com/presentation/d/e/2PACX-1vQwfM3Ns0fWrfCjer7gYcTTJ_d96j7WlZ0RPTY_t9I_mtR1E-05P3PVy9wnYkuPmPmXWdYOjl8LGlAC/pubembed?start=true&loop=true&delayms=7000&rm=minimal"
-  style="width: 100vw; height: 100vh; border: none; display: block;"
-  allowfullscreen
-></iframe>
-  
-  <script>
-  window.addEventListener('message', (event) => {
-    if (event.data?.fullscreen === true) {
-      document.getElementById('overlay').style.display = 'block';
-    } else {
-      document.getElementById('overlay').style.display = 'none';
-    }
-  });
+  <iframe id="slideshowFrame" src="" allowfullscreen></iframe>
 
-  </script>
+  <div id="debugMenu"></div>
 
   <script>
-  const CHECK_INTERVAL = 60000;
-    
-  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby8X53IgB9gmaBjnt2wbxtlNiHucPs_ZjOK3LJvrbocxAM4qdRM6dup0JCxP2fmmGgF/exec";
-  
-  
-  function checkStatusAndRefresh() {
-    var xhr = new XMLHttpRequest();
-    xhr.open("GET", SCRIPT_URL, true);
-  
-    xhr.onreadystatechange = function () {
-      if (xhr.readyState === 4) {
-        if (xhr.status === 200) {
-          var responseText = xhr.responseText.trim();
-          var status = Number(responseText);
-  
-          console.log("Received status:", status);
-  
-          if (status === 1) {
-            console.log("Status is 1 — refreshing page.");
-            location.reload();
+    var CONFIG_URL = "YOUR_APPS_SCRIPT_URL_HERE";
+    var DEFAULT_ID = "19q6v5NqyDLkIB89l-IFuDSy2njVl7bPuESDeXtLZCCQ";
+    var DEFAULT_DELAY = 7000;
+    var lastConfigTime = "";
+    var currentId = "";
+    var currentDelay = "";
+    var nextRefreshTime = "";
+
+    function loadConfig() {
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", CONFIG_URL, true);
+
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+          var cfg;
+          if (xhr.status === 200) {
+            try { cfg = JSON.parse(xhr.responseText); }
+            catch (e) { cfg = {}; }
           } else {
-            console.log("Status is not 1 — no action taken.");
+            cfg = {};
           }
-        } else {
-          console.error("Request failed with status:", xhr.status);
+          applyConfig(cfg);
         }
-      }
-    };
-  
-    xhr.onerror = function () {
-      console.error("Network error occurred.");
-    };
-  
-    xhr.send();
-  
+      };
 
+      xhr.send();
+    }
 
-    };
-  
-  
-  setInterval(checkStatusAndRefresh, CHECK_INTERVAL);
+    function applyConfig(cfg) {
+      var id = cfg.slideshowId || DEFAULT_ID;
+      var delay = cfg.slideDelay || DEFAULT_DELAY;
+      var refreshFlag = cfg.refreshAll;
 
-  </script>
+      currentId = id;
+      currentDelay = delay;
+      lastConfigTime = new Date().toLocaleTimeString();
 
-    <script>
-    var triggered = false;
+      var url = "https://docs.google.com/presentation/d/" +
+        id +
+        "/embed?start=true&loop=true&delayms=" +
+        delay +
+        "&rm=minimal";
 
-    function triggerScriptAndRefresh() {
-      var now = new Date();
-      var day = now.getDay();       // 1 = Monday
-      var hour = now.getHours();    // 1 = 01:00 AM
-      var minute = now.getMinutes();
-  
-      if (day === 1 && hour === 1 && minute === 0 && !triggered) {
-        triggered = true;
-  
-        // Trigger Google Apps Script using XMLHttpRequest
-        var xhr = new XMLHttpRequest();
-        xhr.open("GET", "https://script.google.com/macros/s/AKfycbywcUXw29dWiNzsjS-jL8FoFyKnaAbaPlYkgPz-eQL852g9Hh0qy_p_9l01cgWC2iAv/exec", true);
-        xhr.onreadystatechange = function () {
-          if (xhr.readyState === 4) {
-            console.log("Apps Script triggered:", xhr.status);
-          }
-        };
-        xhr.send();
-  
-        // Delay the refresh by 5 seconds
+      document.getElementById("slideshowFrame").src = url;
+
+      if (refreshFlag === 1) {
         setTimeout(function () {
           location.reload(true);
-        }, 10000); // 5000 ms = 5 seconds
+        }, 2000);
       }
     }
-  
-    // Check every minute
-    setInterval(triggerScriptAndRefresh, 60000);
-  
 
-  </script>
+    function scheduleNextMinute() {
+      var now = new Date();
+      var ms = (60 - now.getSeconds()) * 1000 - now.getMilliseconds();
+      var next = new Date(now.getTime() + ms);
+      nextRefreshTime = next.toLocaleTimeString();
 
-  <div id="debugMenu">
-  <p>Next update in: <span id="timeUntilNext">60s</span></p>
-  </div>
-<script>
-  function toggleDebugMenu() {
-    document.body.classList.toggle("debug-visible");
-  }
-
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "F3") {
-      e.preventDefault(); // optional
-      toggleDebugMenu();
+      setTimeout(function () {
+        loadConfig();
+        scheduleNextMinute();
+      }, ms);
     }
-  });
-</script>
+
+    function updateDebug() {
+      var box = document.getElementById("debugMenu");
+      var now = new Date().toLocaleTimeString();
+      box.textContent =
+        "Time: " + now +
+        "\nNext refresh: " + nextRefreshTime +
+        "\nLast config: " + lastConfigTime +
+        "\nID: " + currentId +
+        "\nDelay: " + currentDelay;
+    }
+
+    setInterval(updateDebug, 500);
+
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "F3") {
+        document.body.classList.toggle("debug-visible");
+      }
+    });
+
+    loadConfig();
+    scheduleNextMinute();
+  </script>
 </body>
 </html>
