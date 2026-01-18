@@ -5,10 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="icon" href="https://t4.oseale.com/favicon.png?v=2" type="image/png">
   <title>Inner.html | t4.oseale.com</title>
+
   <style>
     html, body { margin:0; padding:0; height:100%; overflow:hidden; background:#000; }
     iframe { border:none; width:100vw; height:100vh; display:block; }
     #slideshowFrame { position:fixed; top:0; left:0; width:100vw; height:100vh; z-index:1; }
+
     #debugMenu {
       position:fixed; bottom:20px; left:20px; padding:10px;
       background:#111; color:#0f0; border:1px solid #0f0;
@@ -28,18 +30,18 @@
       inset: 0;
       margin: auto;
       z-index: 1000;
-      display:block;
     }
 
     @keyframes spin {
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
+    }
   </style>
 </head>
+
 <body>
   <div class="ldr"></div>
   <iframe id="slideshowFrame" src="" allowfullscreen></iframe>
-  <div id="offlineIndicator">EI YHTEYTTÄ</div>
   <div id="debugMenu"></div>
 
   <script>
@@ -54,25 +56,28 @@
 
     var loader = document.querySelector(".ldr");
     var iframe = document.getElementById("slideshowFrame");
-    
+
     loader.style.display = "block";
     iframe.style.display = "none";
-    
-    var minLoaderTime = 400;
-    var loadStart = Date.now();
-    
+
+    // --- Hybrid loader logic ---
+    var loadCount = 0;
+    var minDelay = 400;
+
     iframe.addEventListener("load", function () {
-      var elapsed = Date.now() - loadStart;
-      var remaining = minLoaderTime - elapsed;
-    
-      if (remaining < 0) remaining = 0;
-    
+      loadCount++;
+
+      if (loadCount === 1) {
+        return; // ignore first load
+      }
+
       setTimeout(function () {
         loader.style.display = "none";
         iframe.style.display = "block";
-      }, remaining);
+      }, minDelay);
     });
-    
+
+    // --- Config loading ---
     function loadInitialConfig() {
       var xhr = new XMLHttpRequest();
       xhr.open("GET", CONFIG_URL, true);
@@ -106,7 +111,7 @@
         "/embed?start=true&loop=true&delayms=" +
         delay +
         "&rm=minimal" +
-        "&cb=" + Date.now(); 
+        "&cb=" + Date.now();
 
       iframe.src = url;
     }
