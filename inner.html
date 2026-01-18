@@ -33,12 +33,26 @@
     @keyframes spin {
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
+
+      #offlineIndicator {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #c00;
+        color: #fff;
+        padding: 8px 14px;
+        font-family: monospace;
+        border-radius: 4px;
+        z-index: 20000;
+        display: none;
+      }
     }
   </style>
 </head>
 <body>
   <div class="ldr"></div>
   <iframe id="slideshowFrame" src="" allowfullscreen></iframe>
+  <div id="offlineIndicator">EI YHTEYTTÄ</div>
   <div id="debugMenu"></div>
 
   <script>
@@ -53,6 +67,27 @@
 
     var loader = document.querySelector(".ldr");
     var iframe = document.getElementById("slideshowFrame");
+    
+    var offlineBox = document.getElementById("offlineIndicator");
+  
+    function updateOfflineStatus() {
+      if (navigator.onLine) {
+        offlineBox.style.display = "none";
+      } else {
+        offlineBox.style.display = "block";
+      }
+    }
+    
+    window.addEventListener("online", function () {
+      updateOfflineStatus();
+    });
+    
+    window.addEventListener("offline", function () {
+      updateOfflineStatus();
+    });
+    
+    // Initial check
+    updateOfflineStatus();
 
     loader.style.display = "block";
     iframe.style.display = "none";
