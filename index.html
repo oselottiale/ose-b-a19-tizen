@@ -48,7 +48,6 @@
       border-radius: 6px;
       cursor: pointer;
       z-index: 9999;
-      display: none;
     }
     #linktreeBtn {
       position: fixed;
@@ -94,6 +93,14 @@
   <button id="fullscreenBtn" onclick="goFullscreen()" style="width:45px;height:45px;">⛶</button>
   <button id="debugToggleBtn" style="width:45px;height:45px;">🔧</button>
   <button id="linktreeBtn" style="width:45px;height:45px;">✏️</button>
+  <script>
+  document.getElementById("debugToggleBtn").onclick = function () {
+    var frame = document.getElementById("slideshowFrame");
+    frame.contentWindow.postMessage("toggle-debug", "*");
+  };
+  </script>
+  
+
   <script>
   async function loadAlert() {
     try {
