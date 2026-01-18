@@ -142,5 +142,19 @@
     loadInitialConfig();
     scheduleNextMinute();
   </script>
+  <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const loader = document.querySelector(".ldr");
+    const iframe = document.getElementById("slideshowFrame");
+
+    loader.style.display = "block";
+    iframe.style.display = "none";
+
+    iframe.addEventListener("load", () => {
+      loader.style.display = "none";
+      iframe.style.display = "block";
+    });
+  });
+  </script>
 </body>
 </html>
