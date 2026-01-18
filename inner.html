@@ -54,13 +54,23 @@
 
     var loader = document.querySelector(".ldr");
     var iframe = document.getElementById("slideshowFrame");
-
+    
     loader.style.display = "block";
     iframe.style.display = "none";
-
+    
+    var minLoaderTime = 400;
+    var loadStart = Date.now();
+    
     iframe.addEventListener("load", function () {
-      loader.style.display = "none";
-      iframe.style.display = "block";
+      var elapsed = Date.now() - loadStart;
+      var remaining = minLoaderTime - elapsed;
+    
+      if (remaining < 0) remaining = 0;
+    
+      setTimeout(function () {
+        loader.style.display = "none";
+        iframe.style.display = "block";
+      }, remaining);
     });
     
     function loadInitialConfig() {
