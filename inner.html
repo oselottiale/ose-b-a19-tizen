@@ -83,7 +83,9 @@
         id +
         "/embed?start=true&loop=true&delayms=" +
         delay +
-        "&rm=minimal";
+        "&rm=minimal" +
+        "&cb=" + Date.now();
+
 
       document.getElementById("slideshowFrame").src = url;
     }
