@@ -17,22 +17,22 @@
     .debug-visible #debugMenu { display:block; }
 
     .ldr {
-    border: 12px solid #e0e0e0;
-    border-top: 12px solid #3498db;
-    border-bottom: 12px solid #FFD700;
-    border-radius: 50%;
-    width: 60px;
-    height: 60px;
-    animation: spin 2s linear infinite;
-    position: absolute;
-    inset: 0;
-    margin: auto;
-    z-index: 1000;
+      border: 12px solid #e0e0e0;
+      border-top: 12px solid #3498db;
+      border-bottom: 12px solid #FFD700;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      animation: spin 2s linear infinite;
+      position: absolute;
+      inset: 0;
+      margin: auto;
+      z-index: 1000;
     }
 
     @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
   </style>
 </head>
@@ -51,6 +51,17 @@
     var currentDelay = "";
     var nextRefreshTime = "";
 
+    var loader = document.querySelector(".ldr");
+    var iframe = document.getElementById("slideshowFrame");
+
+    loader.style.display = "block";
+    iframe.style.display = "none";
+
+    iframe.addEventListener("load", function () {
+      loader.style.display = "none";
+      iframe.style.display = "block";
+    });
+    
     function loadInitialConfig() {
       var xhr = new XMLHttpRequest();
       xhr.open("GET", CONFIG_URL, true);
@@ -84,10 +95,9 @@
         "/embed?start=true&loop=true&delayms=" +
         delay +
         "&rm=minimal" +
-        "&cb=" + Date.now();
+        "&cb=" + Date.now(); 
 
-
-      document.getElementById("slideshowFrame").src = url;
+      iframe.src = url;
     }
 
     function checkRefreshFlag() {
@@ -142,20 +152,6 @@
 
     loadInitialConfig();
     scheduleNextMinute();
-  </script>
-  <script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const loader = document.querySelector(".ldr");
-    const iframe = document.getElementById("slideshowFrame");
-
-    loader.style.display = "block";
-    iframe.style.display = "none";
-
-    iframe.addEventListener("load", () => {
-      loader.style.display = "none";
-      iframe.style.display = "block";
-    });
-  });
   </script>
 </body>
 </html>
