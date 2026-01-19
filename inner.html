@@ -158,16 +158,35 @@
       }, ms);
     }
 
+var uaString = navigator.userAgent || "N/A";
+var uaDataString = "Not supported";
+
+if (navigator.userAgentData && navigator.userAgentData.getHighEntropyValues) {
+  navigator.userAgentData.getHighEntropyValues([
+    "platform",
+    "platformVersion",
+    "architecture",
+    "model",
+    "uaFullVersion"
+  ]).then(data => {
+    uaDataString = JSON.stringify(data, null, 2);
+  });
+}
+
     function updateDebug() {
-      var box = document.getElementById("debugMenu");
-      var now = new Date().toLocaleTimeString();
-      box.textContent =
-        "Time: " + now +
-        "\nNext refresh: " + nextRefreshTime +
-        "\nLast config load: " + lastConfigTime +
-        "\nID: " + currentId +
-        "\nDelay: " + currentDelay;
-    }
+  var box = document.getElementById("debugMenu");
+  var now = new Date().toLocaleTimeString();
+
+  box.textContent =
+    "Time: " + now +
+    "\nNext refresh: " + nextRefreshTime +
+    "\nLast config load: " + lastConfigTime +
+    "\nID: " + currentId +
+    "\nDelay: " + currentDelay +
+    "\n\n--- Browser Info ---" +
+    "\nuserAgent:\n" + uaString +
+    "\n\nuserAgentData:\n" + uaDataString;
+}
 
     setInterval(updateDebug, 500);
 
