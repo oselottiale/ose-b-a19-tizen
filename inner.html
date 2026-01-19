@@ -68,14 +68,22 @@
 
     var loadCount = 0;
     var minDelay = 400;
-
+    var maxDelay = 5000;
+    
+    var maxTimeout = setTimeout(function () {
+      loader.style.display = "none";
+      iframe.style.display = "block";
+    }, maxDelay);
+    
     iframe.addEventListener("load", function () {
       loadCount++;
-
+    
       if (loadCount === 1) {
-        return; 
+        return;
       }
-
+    
+      clearTimeout(maxTimeout); 
+    
       setTimeout(function () {
         loader.style.display = "none";
         iframe.style.display = "block";
