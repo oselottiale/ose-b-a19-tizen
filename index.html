@@ -81,6 +81,13 @@
   </style>
 </head>
 <body>
+  
+  <div id="topAlert"> Ladataan...
+    <button onclick="document.getElementById('topAlert').style.display='none'" style="margin-left:10px;">✖</button>
+  </div>
+  <iframe id="lowerIframe" src="https://t4.oseale.com/inner.html" allowfullscreen></iframe>
+  
+
   <noscript>
     <div style="width: calc(100vw - 40px);
         background: #fff;
@@ -103,13 +110,6 @@
         font-size: 20px;">käyttääksesi sivua laita javascript takaisin päälle ja päivitä tämä sivu</h2>
       </div>
   </noscript>
-  <div id="topAlert"> Ladataan...
-    <button onclick="document.getElementById('topAlert').style.display='none'" style="margin-left:10px;">✖</button>
-  </div>
-  <iframe id="lowerIframe" src="https://t4.oseale.com/inner.html" allowfullscreen></iframe>
-  
-
-  
 </body>
 <footer>
   <button id="fullscreenBtn" onclick="goFullscreen()" style="width:45px;height:45px;">⛶</button>
