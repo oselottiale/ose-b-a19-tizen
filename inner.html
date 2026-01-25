@@ -3,9 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="icon" href="https://t4.oseale.com/favicon.png?v=2" type="image/png">
+  <link rel="icon" href="https://dev.oseale.com/images/favicon.png?v=2" type="image/png">
   <title>Inner.html | t4.oseale.com</title>
-
+  
+  <link rel="stylesheet" href="https://dev.oseale.com/css/white-ldr.css">
+  
   <style>
     html, body { margin:0; padding:0; height:100%; overflow:hidden; background:#000; }
     iframe { border:none; width:100vw; height:100vh; display:block; }
@@ -17,29 +19,27 @@
       font-family:monospace; z-index:10000; display:none; white-space:pre;
     }
     .debug-visible #debugMenu { display:block; }
-
-    .ldr {
-      border: 12px solid #2c2c2c;
-      border-top: 12px solid #00bcd4;
-      border-bottom: 12px solid #FFD700;
-      border-radius: 50%;
-      width: 60px; 
-      height: 60px;
-      animation: spin 2s linear infinite;
-      position: absolute;
-      inset: 0;
-      margin: auto;
-    }
-
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
   </style>
 </head>
 
 <body>
-  <div class="ldr"></div>
+  <div class="ldr" style="position: relative;
+      width: 100px;
+      height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 1;
+      visibility: visible;
+      transition: opacity 0.6s ease, visibility 0.6s;">
+      <svg class="hexagon" viewBox="0 0 50 50">
+          <polygon points="10,25 17.5,12 32.5,12 40,25 32.5,38 17.5,38"></polygon>
+      </svg>
+      
+      <svg class="ring" viewBox="0 0 50 50">
+          <circle cx="25" cy="25" r="22"></circle>
+      </svg>
+  </div>
   <iframe id="slideshowFrame" src="" allowfullscreen></iframe>
   <div id="debugMenu"></div>
   <script>
@@ -178,12 +178,12 @@ if (navigator.userAgentData && navigator.userAgentData.getHighEntropyValues) {
   var now = new Date().toLocaleTimeString();
 
   box.textContent =
-    "Time: " + now +
-    "\nNext refresh: " + nextRefreshTime +
-    "\nLast config load: " + lastConfigTime +
+    "Aika: " + now +
+    "\nSeuraava tarkistus: " + nextRefreshTime +
+    "\nViimeisimmän tarkistuksen aika: " + lastConfigTime +
     "\nID: " + currentId +
-    "\nDelay: " + currentDelay +
-    "\n\n--- Browser Info ---" +
+    "\nVaihdon aika: " + currentDelay +
+    "\n\n--- Selain info ---" +
     "\nuserAgent:\n" + uaString +
     "\n\nuserAgentData:\n" + uaDataString;
 }
