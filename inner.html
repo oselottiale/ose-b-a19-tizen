@@ -71,21 +71,21 @@
     });
   </script>
   <script>
-    var CONFIG_URL = "https://script.google.com/macros/s/AKfycbxVt8q-GsdsmC4linHgu7X3NlSTzKZUmNSrqJ70GkQ4KZx0dPpC1eMBYrfanYsglRowLQ/exec";
+    var CONFIG_URL = "https://script.google.com/macros/s/AKfycbzPCFNBl_TqMUUmJDVrYx4KRDi-rHoQqznX_Eqgdz72PfOEpIVmJ0koAB4FLQ21v8sfGg/exec";
     var DEFAULT_ID = "19q6v5NqyDLkIB89l-IFuDSy2njVl7bPuESDeXtLZCCQ";
     var DEFAULT_DELAY = 7000;
-
+    
     var lastConfigTime = "";
     var currentId = "";
     var currentDelay = "";
     var nextRefreshTime = "";
-
+    
     var loader = document.querySelector(".ldr");
     var iframe = document.getElementById("slideshowFrame");
-
+    
     loader.style.display = "block";
     iframe.style.display = "none";
-
+    
     var loadCount = 0;
     var minDelay = 400;
     var maxDelay = 7000;
@@ -98,11 +98,9 @@
     iframe.addEventListener("load", function () {
       loadCount++;
     
-      if (loadCount === 1) {
-        return;
-      }
+      if (loadCount === 1) return;
     
-      clearTimeout(maxTimeout); 
+      clearTimeout(maxTimeout);
     
       setTimeout(function () {
         loader.style.display = "none";
@@ -110,10 +108,57 @@
       }, minDelay);
     });
 
+    // Redirect validation
+
+    function isValidRedirect(value) {
+      if (!value) return false;
+    
+      return (
+        value.startsWith("http://") ||
+        value.startsWith("https://") ||
+        value.startsWith("/")
+      );
+    }
+
+    // APPLY CONFIG 
+
+    function applyInitialConfig(cfg) {
+    
+
+      if (isValidRedirect(cfg.redirect)) {
+        currentId = "REDIRECT";
+        currentDelay = "-";
+        lastConfigTime = new Date().toLocaleTimeString();
+    
+        iframe.src = cfg.redirect + "?cb=" + Date.now();
+        return;
+      }
+    
+      var id = cfg.slideshowId || DEFAULT_ID;
+      var delay = cfg.slideDelay || DEFAULT_DELAY;
+    
+      currentId = id;
+      currentDelay = delay;
+      lastConfigTime = new Date().toLocaleTimeString();
+    
+      var url =
+        "https://docs.google.com/presentation/d/" +
+        id +
+        "/embed?start=true&loop=true&delayms=" +
+        delay +
+        "&rm=minimal" +
+        "&cb=" + Date.now();
+    
+      iframe.src = url;
+    }
+    
+    
+    // LOAD CONFIG
+
     function loadInitialConfig() {
       var xhr = new XMLHttpRequest();
       xhr.open("GET", CONFIG_URL, true);
-
+    
       xhr.onreadystatechange = function () {
         if (xhr.readyState === 4) {
           var cfg;
@@ -126,99 +171,101 @@
           applyInitialConfig(cfg);
         }
       };
-
+    
       xhr.send();
     }
-
-    function applyInitialConfig(cfg) {
-      var id = cfg.slideshowId || DEFAULT_ID;
-      var delay = cfg.slideDelay || DEFAULT_DELAY;
-
-      currentId = id;
-      currentDelay = delay;
-      lastConfigTime = new Date().toLocaleTimeString();
-
-      var url = "https://docs.google.com/presentation/d/" +
-        id +
-        "/embed?start=true&loop=true&delayms=" +
-        delay +
-        "&rm=minimal" +
-        "&cb=" + Date.now();
-
-      iframe.src = url;
-    }
+    
+    
+    // CHECK REFRESH FLAG
 
     function checkRefreshFlag() {
       var xhr = new XMLHttpRequest();
       xhr.open("GET", CONFIG_URL, true);
-
+    
       xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status === 200) {
           var cfg;
           try { cfg = JSON.parse(xhr.responseText); }
           catch (e) { cfg = {}; }
-
+  
           if (cfg.refreshAll === 1) {
             location.reload(true);
           }
+          
+          if (isValidRedirect(cfg.redirect)) {
+            if (!iframe.src.includes(cfg.redirect)) {
+              location.reload(true);
+            }
+          }
         }
       };
-
+    
       xhr.send();
     }
+    
+ 
+    // SCHEDULE MINUTE CHECK
 
     function scheduleNextMinute() {
       var now = new Date();
       var ms = (60 - now.getSeconds()) * 1000 - now.getMilliseconds();
       var next = new Date(now.getTime() + ms);
       nextRefreshTime = next.toLocaleTimeString();
-
+    
       setTimeout(function () {
         checkRefreshFlag();
         scheduleNextMinute();
       }, ms);
     }
-
-var uaString = navigator.userAgent || "N/A";
-var uaDataString = "Not supported";
-
-if (navigator.userAgentData && navigator.userAgentData.getHighEntropyValues) {
-  navigator.userAgentData.getHighEntropyValues([
-    "platform",
-    "platformVersion",
-    "architecture",
-    "model",
-    "uaFullVersion"
-  ]).then(data => {
-    uaDataString = JSON.stringify(data, null, 2);
-  });
-}
-
+    
+    
+    // DEBUG INFO
+    
+    var uaString = navigator.userAgent || "N/A";
+    var uaDataString = "Not supported";
+    
+    if (navigator.userAgentData && navigator.userAgentData.getHighEntropyValues) {
+      navigator.userAgentData.getHighEntropyValues([
+        "platform",
+        "platformVersion",
+        "architecture",
+        "model",
+        "uaFullVersion"
+      ]).then(data => {
+        uaDataString = JSON.stringify(data, null, 2);
+      });
+    }
+    
     function updateDebug() {
-  var box = document.getElementById("debugMenu");
-  var now = new Date().toLocaleTimeString();
-
-  box.textContent =
-    "Aika: " + now +
-    "\nSeuraava tarkistus: " + nextRefreshTime +
-    "\nViimeisimmän tarkistuksen aika: " + lastConfigTime +
-    "\nID: " + currentId +
-    "\nVaihdon aika: " + currentDelay +
-    "\n\n--- Selain info ---" +
-    "\nuserAgent:\n" + uaString +
-    "\n\nuserAgentData:\n" + uaDataString;
-}
-
+      var box = document.getElementById("debugMenu");
+      var now = new Date().toLocaleTimeString();
+    
+      box.textContent =
+        "Aika: " + now +
+        "\nSeuraava tarkistus: " + nextRefreshTime +
+        "\nViimeisimmän tarkistuksen aika: " + lastConfigTime +
+        "\nID: " + currentId +
+        "\nVaihdon aika: " + currentDelay +
+        "\n\n--- Selain info ---" +
+        "\nuserAgent:\n" + uaString +
+        "\n\nuserAgentData:\n" + uaDataString;
+    }
+    
     setInterval(updateDebug, 500);
-
+    
     document.addEventListener("keydown", function (e) {
       if (e.key === "F3") {
         document.body.classList.toggle("debug-visible");
       }
     });
+    
+
+    
+    // STARTUP
 
     loadInitialConfig();
     scheduleNextMinute();
+
   </script>
 </body>
 </html>
