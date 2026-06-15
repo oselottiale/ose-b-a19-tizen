@@ -1,6 +1,6 @@
 {
   "message": "Tilapäisiä ongelmia ohjauspaneelissa etäpäivityksen kanssa | vain: t4.oseale.com",
-  "visible": true,
+  "visible": false,
   "backgroundColor": "#F2B400",
   "textColor": "#ffffff",
   "closable": true
