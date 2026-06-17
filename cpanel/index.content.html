@@ -14,8 +14,15 @@
     <div class="box">
         <img src="https://t4.oseale.com/oseale-logo.png" width="100px" height="100px">
         <h1>Ohjauspaneeli</h1>
-        <h2 style="display: none;">Made by oseale in 2025</h2>
-        <a><button class="margin_top" id="startButton">Päivitä kaikki esitykset.</button></a>
+        <button class="margin_top" id="startButton">Päivitä kaikki esitykset.</button>
+        <hr></hr>
+        <h2>Diojen välinen aika (millisekuntteina)</h2>
+        <input type="text" id="time">
+        <h2 class="margin_top">Näytä muu sivu kuin slides esitys</h2>
+        <input type="text" id="redir">
+        <h2 class="margin_top">Google slides ID</h2>
+        <input type="text" id="sid">
+        <button class="margin_top" id="sendButton">Päivitä kaikki esitykset.</button>
         <a href="https://t4.oseale.com/linktree.html"><button>🡨 Takaisin</button></a>
         <a href="https://t4.oseale.com/slides-edit-login/menu-auth.html" style="display: none;"><button>Muokkaa ruokalistan sisältöä</button></a>
         <div class="dropdown">
@@ -48,55 +55,50 @@
         </script>
 
         <script>
-        const button = document.getElementById("startButton");
-        const statusBox = document.getElementById("statusBox");
-        const timerDisplay = document.getElementById("timer");
+        const startButton = document.getElementById("startButton");
+        const banner = document.getElementById("updateBanner");
         
         const scriptURL = "https://script.google.com/macros/s/AKfycbyDM6tOlFJKinNRGci53SQRSC37LHeRAhkCE63gUCanySSuhC0YgllClBEOX5fkSscf/exec";
         
-        function sendStatus(value, callbackName) {
+        function extractSlidesId(url) {
+            const match = url.match(/\/d\/([^/]+)\//);
+            return match ? match[1] : url;
+        }
+        
+        document.getElementById("sid").addEventListener("input", (e) => {
+            const cleaned = extractSlidesId(e.target.value);
+            e.target.value = cleaned;
+        });
+   
+        function sendConfig(callbackName) {
+            const a1 = 1; 
+            const b1 = document.getElementById("sid").value;
+            const c1 = document.getElementById("time").value;
+            const d1 = document.getElementById("redir").value;
+        
             const script = document.createElement("script");
-            script.src = `${scriptURL}?status=${value}&callback=${callbackName}`;
+            script.src =
+                `${scriptURL}?a1=${encodeURIComponent(a1)}&b1=${encodeURIComponent(b1)}&c1=${encodeURIComponent(c1)}&d1=${encodeURIComponent(d1)}&callback=${callbackName}`;
             document.body.appendChild(script);
         }
         
         function handleStatusSet(data) {
             if (data.success) {
-                startCountdown();
-                document.getElementById("refreshOverlay").style.display = "flex";
+                banner.style.display = "flex";
+                startButton.disabled = true;
             } else {
-                statusBox.style.display = "none";
-                statusBox.textContent = "Error setting status. Please try again.";
-                button.disabled = false;
-                timerDisplay.style.display = "none";
+                banner.textContent = "Virhe asetusten tallennuksessa.";
             }
         }
         
-        function startCountdown() {
-            let secondsLeft = 70;
-            statusBox.style.display = "none";
-            statusBox.textContent = "Status set to 1.";
-            timerDisplay.style.display = "block";
-        
-            const timer = setInterval(() => {
-                secondsLeft--;
-                const min = Math.floor(secondsLeft / 60);
-                const sec = secondsLeft % 60;
-                timerDisplay.textContent = `Aikaa jäljellä: ${min}:${sec.toString().padStart(2, '0')}`;
-        
-                if (secondsLeft <= 0) {
-                    clearInterval(timer);
-                    document.getElementById("refreshOverlay").style.display = "none";
-                }
-            }, 1000);
-        }
-        
-        button.addEventListener("click", () => {
-            button.disabled = true;
-            sendStatus("1", "handleStatusSet");
-            document.getElementById("refreshOverlay").style.display = "flex";
+        startButton.addEventListener("click", () => {
+            startButton.disabled = true;
+            banner.style.display = "flex";
+            sendConfig("handleStatusSet");
         });
         </script>
+
+
         <div class="footer">&copy 2025 Oseale.</div>
     </div>
 </html>
