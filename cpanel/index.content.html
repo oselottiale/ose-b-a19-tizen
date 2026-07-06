@@ -1,104 +1,161 @@
 <!DOCTYPE html>
-    <div id="refreshOverlay" style="display: none;">
-        <div class="overlay-content">
-            <p>Päivitetään voit sulkea sivun milloin tahansa.</p>
+<div>
+    <div id="refreshOverlay" style="
+        display: none; 
+        position: fixed; 
+        top: 0; left: 0; 
+        width: 100vw; height: 100vh; 
+        background-color: rgba(30, 60, 114, 0.9); 
+        display: none; 
+        justify-content: center; 
+        align-items: center; 
+        z-index: 9999;
+    ">
+        <div class="overlay-content" style="
+            background-color: #fff; 
+            padding: 24px 32px; 
+            border-radius: 12px; 
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); 
+            font-size: 18px; 
+            color: #333; 
+            text-align: center; 
+            border: 4px solid #FFD700; 
+            max-width: 400px;
+        ">
+            <p style="font-weight: bold; margin-bottom: 10px;">Päivitetään… voit sulkea sivun milloin tahansa.</p>
             <div id="statusBox" style="display: none;"></div>
-            <div id="timer" style="display: none; font-size: 26px; color: black; margin-top: 20px; font-family: Arial, Helvetica, sans-serif;">Aikaa jäljellä: 1:10</div>
+            <div id="timer" style="font-size: 28px; color: #1e3c72; margin-top: 20px; font-family: Arial, Helvetica, sans-serif; font-weight: bold;">
+                Aikaa jäljellä: 1:10
+            </div>
         </div>
     </div>
 
-
-    
-    
-    
     <div class="box">
-        <img src="https://t4.oseale.com/oseale-logo.png" width="100px" height="100px">
+        <img src="https://t4.oseale.com/oseale-logo.png" width="100px" height="100px" alt="Logo">
         <h1>Ohjauspaneeli</h1>
-        <button class="margin_top" id="startButton">Päivitä kaikki esitykset.</button>
-        <hr></hr>
+        
+        <button class="margin_top update-trigger" id="startButton">Päivitä kaikki esitykset.</button>
+        <hr>
+        
         <h2>Diojen välinen aika (millisekuntteina)</h2>
-        <input type="text" id="time">
+        <input type="text" id="time" placeholder="esim. 5000">
+        
         <h2 class="margin_top">Näytä muu sivu kuin slides esitys</h2>
-        <input type="text" id="redir">
+        <input type="text" id="redir" placeholder="https://...">
+        
         <h2 class="margin_top">Google slides ID</h2>
         <input type="text" id="sid">
-        <button class="margin_top" id="sendButton">Päivitä kaikki esitykset.</button>
-        <a href="https://t4.oseale.com/linktree.html"><button>🡨 Takaisin</button></a>
-        <a href="https://t4.oseale.com/slides-edit-login/menu-auth.html" style="display: none;"><button>Muokkaa ruokalistan sisältöä</button></a>
+        
+        <button class="margin_top update-trigger" id="sendButton">Päivitä kaikki esitykset.</button>
+        
+        <a href="https://t4.oseale.com/linktree.html"><button type="button">🡨 Takaisin</button></a>
+        
         <div class="dropdown">
-        <button class="dropbtn" id="dropdownToggle" style="display: none;">Valikko ⌄</button>
-        <div class="dropdown-content" id="dropdownMenu">
-            <a href="https://t4.oseale.com/cpanel/sheets-auth.html">Sheets ohjauspaneeli</a>
-            <a href="https://script.google.com/home/projects/1T1lyWuX-FrJ6XsdJxoLPW--NhUgqPmSWlBSs7n2FVVAyitfwjc3mUnyE/edit">Google apps script (Etä päivitys)</a>
-            <a href="https://script.google.com/home/projects/13eG0tXEP2T4Rybifdsgmkcx0NIAkgijqTRLrchRNvqvqV4aacuoy6umH/edit">Google apps script (Ruokalista päivitys)</a>
-            <a href="https://t4.oseale.com/inner.html">Uusin (v2) versio sisäinen</a>
-            <a href="https://t4.oseale.com/inner3.html">Vanha (v1) versio sisäinen</a>
-            <a href="https://t4.oseale.com/inner2.html">Beta versio sisäinen</a>
+            <button class="dropbtn" id="dropdownToggle">Valikko ⌄</button>
+            <div class="dropdown-content" id="dropdownMenu">
+                <a href="https://t4.oseale.com/cpanel/sheets-auth.html">Sheets ohjauspaneeli</a>
+                <a href="https://script.google.com/home/projects/1T1lyWuX-FrJ6XsdJxoLPW--NhUgqPmSWlBSs7n2FVVAyitfwjc3mUnyE/edit" target="_blank">Google apps script (Etä päivitys)</a>
+                <a href="https://script.google.com/home/projects/13eG0tXEP2T4Rybifdsgmkcx0NIAkgijqTRLrchRNvqvqV4aacuoy6umH/edit" target="_blank">Google apps script (Ruokalista päivitys)</a>
+                <a href="https://t4.oseale.com/inner.html">Uusin (v2) versio sisäinen</a>
+                <a href="https://t4.oseale.com/inner3.html">Vanha (v1) versio sisäinen</a>
+                <a href="https://t4.oseale.com/inner2.html">Beta versio sisäinen</a>
+            </div>
         </div>
-        </div>
-        <script>
-        const toggleBtn = document.getElementById("dropdownToggle");
-        const dropdown = document.getElementById("dropdownMenu");
+        
+        <div class="footer">&copy; 2026 Oseale</div>
+    </div>
+</div>
 
-        toggleBtn.addEventListener("click", () => {
+<script>
+    // --- DROPDOWN TOIMINNALLISUUS ---
+    const toggleBtn = document.getElementById("dropdownToggle");
+    const dropdown = document.getElementById("dropdownMenu");
+
+    toggleBtn.addEventListener("click", () => {
         if (dropdown.classList.contains("show")) {
             dropdown.style.maxHeight = dropdown.scrollHeight + "px"; 
             requestAnimationFrame(() => {
-            dropdown.style.maxHeight = "0";
-            dropdown.classList.remove("show");
+                dropdown.style.maxHeight = "0";
+                dropdown.classList.remove("show");
             });
         } else {
             dropdown.classList.add("show");
             dropdown.style.maxHeight = dropdown.scrollHeight + "px";
         }
-        });
-        </script>
+    });
 
-        <script>
-        const startButton = document.getElementById("startButton");
-        const banner = document.getElementById("updateBanner");
+    // --- TIETOJEN LÄHETYS JA AJASTIN ---
+    const scriptURL = "https://script.google.com/macros/s/AKfycbwZ4X6iZ62Mz7Ns5eAfbbM0eXYhKdP3ymFrxY3vFjpEzOHKFExi0mK36xSX2nlIIlm-/exec";
+    const overlay = document.getElementById("refreshOverlay");
+    const timerDisplay = document.getElementById("timer");
+    const updateButtons = document.querySelectorAll(".update-trigger");
+
+    // Puhdistetaan Google Slides URL:sta pelkkä ID talteen
+    function extractSlidesId(url) {
+        const match = url.match(/\/d\/([^/]+)\//);
+        return match ? match[1] : url;
+    }
+    
+    document.getElementById("sid").addEventListener("input", (e) => {
+        e.target.value = extractSlidesId(e.target.value);
+    });
+
+    // JSONP Lähetysfunktio
+    function sendConfig(callbackName) {
+        const a1 = 1; 
+        const b1 = document.getElementById("sid").value;
+        const c1 = document.getElementById("time").value;
+        const d1 = document.getElementById("redir").value;
+    
+        const script = document.createElement("script");
+        script.src = `${scriptURL}?a1=${encodeURIComponent(a1)}&b1=${encodeURIComponent(b1)}&c1=${encodeURIComponent(c1)}&d1=${encodeURIComponent(d1)}&callback=${callbackName}`;
+        document.body.appendChild(script);
+    }
+    
+    // Ajastinfunktio (70 sekuntia)
+    function startCountdown(durationInSeconds) {
+        let timeRemaining = durationInSeconds;
         
-        const scriptURL = "https://script.google.com/macros/s/AKfycbwZ4X6iZ62Mz7Ns5eAfbbM0eXYhKdP3ymFrxY3vFjpEzOHKFExi0mK36xSX2nlIIlm-/exec";
-        
-        function extractSlidesId(url) {
-            const match = url.match(/\/d\/([^/]+)\//);
-            return match ? match[1] : url;
-        }
-        
-        document.getElementById("sid").addEventListener("input", (e) => {
-            const cleaned = extractSlidesId(e.target.value);
-            e.target.value = cleaned;
-        });
-   
-        function sendConfig(callbackName) {
-            const a1 = 1; 
-            const b1 = document.getElementById("sid").value;
-            const c1 = document.getElementById("time").value;
-            const d1 = document.getElementById("redir").value;
-        
-            const script = document.createElement("script");
-            script.src =
-                `${scriptURL}?a1=${encodeURIComponent(a1)}&b1=${encodeURIComponent(b1)}&c1=${encodeURIComponent(c1)}&d1=${encodeURIComponent(d1)}&callback=${callbackName}`;
-            document.body.appendChild(script);
-        }
-        
-        function handleStatusSet(data) {
-            if (data.success) {
-                banner.style.display = "flex";
-                startButton.disabled = true;
-            } else {
-                banner.textContent = "Virhe asetusten tallennuksessa.";
+        const interval = setInterval(() => {
+            let minutes = Math.floor(timeRemaining / 60);
+            let seconds = timeRemaining % 60;
+            
+            // Muotoillaan sekunnit aina kaksinumeroiseksi (esim. 05)
+            seconds = seconds < 10 ? "0" + seconds : seconds;
+            
+            timerDisplay.textContent = `Aikaa jäljellä: ${minutes}:${seconds}`;
+            
+            if (timeRemaining <= 0) {
+                clearInterval(interval);
+                overlay.style.display = "none";
+                updateButtons.forEach(btn => btn.disabled = false);
             }
+            timeRemaining--;
+        }, 1000);
+    }
+
+    // Google Apps Script vastauskäsittelijä
+    window.handleStatusSet = function(data) {
+        if (data.success) {
+            // Käynnistetään 70 sekunnin laskenta käyttöliittymässä
+            startCountdown(70);
+        } else {
+            alert("Virhe asetusten tallennuksessa.");
+            overlay.style.display = "none";
+            updateButtons.forEach(btn => btn.disabled = false);
         }
-        
-        startButton.addEventListener("click", () => {
-            startButton.disabled = true;
-            banner.style.display = "flex";
+    }
+    
+    // Sidotaan molemmat painikkeet (startButton ja sendButton) samaan toimintoon
+    updateButtons.forEach(button => {
+        button.addEventListener("click", () => {
+            // Lukitaan painikkeet ja avataan kokoruudun odotusikkuna
+            updateButtons.forEach(btn => btn.disabled = true);
+            overlay.style.display = "flex";
+            timerDisplay.textContent = "Käynnistetään...";
+            
+            // Lähetetään tiedot Apps Scriptiin
             sendConfig("handleStatusSet");
         });
-        </script>
-
-
-        <div class="footer">&copy 2025 Oseale</div>
-    </div>
-</html>
+    });
+</script>
