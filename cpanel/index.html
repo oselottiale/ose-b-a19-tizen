@@ -7,235 +7,143 @@
 
   <style>
     #refreshOverlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(30, 60, 114, 0.85);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(30, 60, 114, 0.85);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
     }
 
     .overlay-content {
-        background-color: #fff;
-        padding: 24px 32px;
-        border-radius: 12px;
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-        font-size: 18px;
-        color: #333;
-        text-align: center;
-        border: 4px solid #FFD700;
-        max-width: 400px;
+      background-color: #fff;
+      padding: 24px 32px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      font-size: 18px;
+      color: #333;
+      text-align: center;
+      border: 4px solid #FFD700;
+      max-width: 400px;
     }
 
     html, body {
-        margin: 0;
-        padding: 0;
-        overflow-x: hidden;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
     }
 
     .box {
-        width: calc(100vw - 40px);
-        background: #fff;
-        padding: 40px;
-        border-radius: 12px;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-        text-align: center;
-        max-width: 500px;
-        border: 4px solid #FFD700;
+      width: calc(100vw - 40px);
+      background: #fff;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      max-width: 500px;
+      border: 4px solid #FFD700;
     }
+
     h1 {
-        text-align: center;
-        color: #333333;
-        font-family: Arial, Helvetica, sans-serif;
-        font-size: 44px;
+      text-align: center;
+      color: #333;
+      font-size: 44px;
+      font-family: Arial, Helvetica, sans-serif;
     }
-        
 
     h2 {
-        text-align: center;
-        color: #666666;
-        font-family: Arial, Helvetica, sans-serif;
-        font-size: 20px;
-    }
-    .logo {
-        align-items: center;
-    }
-
-    .footer {
-        margin-top: 20px;
-        font-size: 14px;
-        color: #777;
+      text-align: center;
+      color: #666;
+      font-size: 20px;
+      font-family: Arial, Helvetica, sans-serif;
     }
 
     button {
-        justify-content: center; 
-        gap: 8px;
-        width: 100%;
-        height: 60px;
-        padding: 12px;
-        background-color: #1e3c72;
-        color: white;
-        font-family: Arial, Helvetica, sans-serif;
-        font-size: 16px;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: background 0.3s ease;
-        margin-bottom: 8px;
-        margin-top: 2px;
+      width: 100%;
+      height: 60px;
+      padding: 12px;
+      background-color: #1e3c72;
+      color: white;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      margin-bottom: 8px;
+      margin-top: 2px;
     }
-        
-    .margin_top {
-        margin-top: 16px;
-    }
-        
+
     button:hover {
-        background-color: #16335f;
+      background-color: #16335f;
+    }
+
+    .margin_top {
+      margin-top: 16px;
     }
 
     .dropdown {
-        position: relative;
-        display: inline-block;
-        width: 100%;
+      position: relative;
+      width: 100%;
     }
 
     .dropbtn {
-        height: 60px;
-        padding: 12px;
-        background-color: #1e3c72;
-        color: white;
-        font-family: Arial, Helvetica, sans-serif;
-        border: none;
-        border-radius: 8px;
-        font-size: 16px;
-        cursor: pointer;
-        transition: background 0.3s ease;
-        margin-bottom: 8px;
-        margin-top: 2px;
-        width: 100%;
-        max-width: 500px;
+      width: 100%;
+      height: 60px;
+      padding: 12px;
+      background-color: #1e3c72;
+      color: white;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-bottom: 8px;
+      margin-top: 2px;
     }
 
     .dropdown-content {
-        will-change: max-height, opacity;
-        max-height: 0;
-        opacity: 0;
-        overflow: hidden;
-        transition: max-height 0.4s ease, opacity 0.4s ease;
-        border: 4px solid #FFD700;
-        background-color: #f9f9f9;
-        width: 100%;
-        max-width: 500px;
-        box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
-        z-index: 1;
-        border-radius: 6px;
-        padding: 0;
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, opacity 0.4s ease;
+      border: 4px solid #FFD700;
+      background-color: #f9f9f9;
+      width: 100%;
+      box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+      border-radius: 6px;
+      padding: 0;
     }
 
     .dropdown-content.show {
-        max-height: 500px;
-        opacity: 1;
-        padding: 12px 0;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      max-height: 500px;
+      opacity: 1;
+      padding: 12px 0;
     }
 
     .dropdown-content a {
-        opacity: 0;
-        transform: translateY(-10px);
-        transition: opacity 0.3s ease, transform 0.3s ease;
+      color: #333;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+      opacity: 0;
+      transform: translateY(-10px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
     }
 
     .dropdown-content.show a {
-        opacity: 1;
-        transform: translateY(0);
+      opacity: 1;
+      transform: translateY(0);
     }
 
-    .dropdown-content a {
-        color: #333;
-        padding: 12px 16px;
-        text-decoration: none;
-        display: block;
-    }
-
-    .dropdown-content a:hover {
-        background-color: #ddd;
-    }
-
-    .dropdown-content.show {
-        display: block;
-    }
-
-    button a {
-        color: white;
-        font-family: Arial, Helvetica, sans-serif;
-        font-size: 16px;
-        text-align: left;
-    }
-
-    #statusBox {
-        display: none;
-        background-color: #1e3c72;
-        color: white;
-        padding: 20px;
-        border-radius: 8px;
-        font-size: 18px;
-        margin-top: 20px;
-    }
-
-    #startButton:disabled {
-        background-color: #888;
-        cursor: not-allowed;
-    }
-    #loading {
-      width: 100%;
-      padding: 40px;
-      text-align: center;
-      font-size: 20px;
-      font-weight: bold;
-    }
-
-    .ldr {
-        border: 12px solid #e0e0e0;
-        border-top: 12px solid #3498db;
-        border-bottom: 12px solid #FFD700;
-        border-radius: 50%;
-        width: 60px;
-        height: 60px;
-        animation: spin 2s linear infinite;
-        position: absolute;
-        inset: 0;
-        margin: auto;
-        z-index: 1;
-        }
-
-        @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-        }
-
-    #app {
-      display: block;
-    }
-
-    body {
-        margin: 0;
-        padding: 0;
-        overflow-x: hidden;
-        font-family: 'Segoe UI', sans-serif;
-        background: linear-gradient(135deg, #1e3c72, #2a5298);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
-    }
-  </style>
-</head>
-<body>
-    <div id="updateBanner" style="
+    #updateBanner {
       display:none;
       position:fixed;
       top:0;
@@ -249,16 +157,122 @@
       z-index:9999;
       border-bottom:4px solid #FFD700;
       font-family: Arial, Helvetica, sans-serif;
-  ">
-      Päivitetään… voit sulkea sivun.
+    }
+
+    .ldr {
+      border: 12px solid #e0e0e0;
+      border-top: 12px solid #3498db;
+      border-bottom: 12px solid #FFD700;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      animation: spin 2s linear infinite;
+      position: absolute;
+      inset: 0;
+      margin: auto;
+      z-index: 1;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+
+<body>
+
+<div id="updateBanner">Päivitetään… voit sulkea sivun.</div>
+<div class="ldr"></div>
+
+<div id="app">
+  <div class="box">
+    <img src="https://t4.oseale.com/oseale-logo.png" width="100px" height="100px">
+
+    <h1>Ohjauspaneeli</h1>
+
+    <button class="margin_top" id="startButton">Päivitä kaikki esitykset.</button>
+
+    <hr>
+
+    <h2>Diojen välinen aika (millisekuntteina)</h2>
+    <input type="text" id="time">
+
+    <h2 class="margin_top">Näytä muu sivu kuin slides esitys</h2>
+    <input type="text" id="redir">
+
+    <h2 class="margin_top">Google slides ID</h2>
+    <input type="text" id="sid">
+
+    <button class="margin_top" id="sendButton">Päivitä kaikki esitykset.</button>
+
+    <a href="https://t4.oseale.com/linktree.html"><button>🡨 Takaisin</button></a>
+
+    <div class="dropdown">
+      <button class="dropbtn" id="dropdownToggle">Valikko ⌄</button>
+      <div class="dropdown-content" id="dropdownMenu">
+        <a href="https://t4.oseale.com/cpanel/sheets-auth.html">Sheets ohjauspaneeli</a>
+        <a href="https://script.google.com/home/projects/1T1lyWuX-FrJ6XsdJxoLPW--NhUgqPmSWlBSs7n2FVVAyitfwjc3mUnyE/edit">Google apps script (Etä päivitys)</a>
+        <a href="https://script.google.com/home/projects/13eG0tXEP2T4Rybifdsgmkcx0NIAkgijqTRLrchRNvqvqV4aacuoy6umH/edit">Google apps script (Ruokalista päivitys)</a>
+        <a href="https://t4.oseale.com/inner.html">Uusin (v2) versio sisäinen</a>
+        <a href="https://t4.oseale.com/inner3.html">Vanha (v1) versio sisäinen</a>
+        <a href="https://t4.oseale.com/inner2.html">Beta versio sisäinen</a>
+      </div>
+    </div>
+
+    <div class="footer">&copy; 2025 Oseale</div>
   </div>
+</div>
 
-  <div class="ldr"></div>
+<script>
+  const toggleBtn = document.getElementById("dropdownToggle");
+  const dropdown = document.getElementById("dropdownMenu");
 
-  <div id="app"></div>
+  toggleBtn.addEventListener("click", () => {
+    dropdown.classList.toggle("show");
+  });
+</script>
 
-  <script src="https://t4.oseale.com/auth.js"></script>
-  
-  <script type="module" src="https://t4.oseale.com/firebaseauth.js"></script>
+<script>
+  const scriptURL = "https://script.google.com/macros/s/AKfycbwZ4X6iZ62Mz7Ns5eAfbbM0eXYhKdP3ymFrxY3vFjpEzOHKFExi0mK36xSX2nlIIlm-/exec";
+
+  function extractSlidesId(url) {
+    const match = url.match(/\/d\/([^/]+)\//);
+    return match ? match[1] : url;
+  }
+
+  document.getElementById("sid").addEventListener("input", (e) => {
+    e.target.value = extractSlidesId(e.target.value);
+  });
+
+  function sendConfig(callbackName) {
+    const a1 = 1;
+    const b1 = document.getElementById("sid").value;
+    const c1 = document.getElementById("time").value;
+    const d1 = document.getElementById("redir").value;
+
+    const script = document.createElement("script");
+    script.src =
+      `${scriptURL}?a1=${encodeURIComponent(a1)}&b1=${encodeURIComponent(b1)}&c1=${encodeURIComponent(c1)}&d1=${encodeURIComponent(d1)}&callback=${callbackName}`;
+    document.body.appendChild(script);
+  }
+
+  function handleStatusSet(data) {
+    if (data.success) {
+      document.getElementById("updateBanner").style.display = "flex";
+      document.getElementById("startButton").disabled = true;
+    }
+  }
+
+  document.getElementById("startButton").addEventListener("click", () => {
+    document.getElementById("startButton").disabled = true;
+    document.getElementById("updateBanner").style.display = "flex";
+    sendConfig("handleStatusSet");
+  });
+</script>
+
+<script src="https://t4.oseale.com/auth.js"></script>
+<script type="module" src="https://t4.oseale.com/firebaseauth.js"></script>
+
 </body>
 </html>
